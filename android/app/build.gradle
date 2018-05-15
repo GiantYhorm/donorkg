@@ -99,7 +99,7 @@ android {
 
     defaultConfig {
         applicationId "com.donorkg"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-image-crop-picker')
     implementation(project(':react-native-firebase')) {

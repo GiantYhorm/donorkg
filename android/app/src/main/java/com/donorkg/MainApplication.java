@@ -3,6 +3,7 @@ package com.donorkg;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -10,8 +11,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
-import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 
 import java.util.Arrays;
@@ -33,7 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
             new PickerPackage(),
             new RNFirebasePackage(),
             new RNFetchBlobPackage(),
-	          new RNFirebaseAuthPackage()
+                  new RNFirebaseAuthPackage()
       );
     }
 
