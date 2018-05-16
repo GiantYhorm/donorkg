@@ -13,7 +13,6 @@ class Initial extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         firebase.auth().signOut()
-        Actions.secondMain();
       } else {
         Actions.login();
       }

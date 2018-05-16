@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-<<<<<<< HEAD
 import { View,Text,Platform,KeyboardAvoidingView, Animated } from 'react-native'
 import { connect } from 'react-redux'
-import { authorizeUser } from '../actions'
 import {  } from './common'
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux'
@@ -14,22 +12,12 @@ import {textStyle} from '../Variables'
 
 const logoUri = require('../assets/logo.png');
 
-=======
-import { Text,Image,ImageBackground,KeyboardAvoidingView,Platform,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser,errorShowed } from '../actions'
-import { InputLogin, Spinner } from './common'
-import firebase from 'firebase'
-import { Actions } from 'react-native-router-flux'
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
-
 class LoginForm extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-<<<<<<< HEAD
       phoneNumberActive: false,
-      phoneNumber: '+996',
+      phoneNumber: '+996555232307',
       loading: false,
       width: '',
       height: '',
@@ -45,14 +33,13 @@ class LoginForm extends Component {
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user)
       } else {
         // User has been signed out, reset the state
         this.setState({
           user: null,
           message: '',
           codeInput: '',
-          phoneNumber: '+996',
+          phoneNumber: '+996555232307',
           confirmResult: null,
         });
       }
@@ -86,26 +73,11 @@ class LoginForm extends Component {
 
   signOut = () => {
     firebase.auth().signOut();
-=======
-      loading: false,
-      logo : null,
-      email : '',
-      password : '',
-      background : null,
-      loadingComponent : true,
-      opacityValue: new Animated.Value(1),
-      disabled : false
-    };
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
   }
-  onEmailChange(text) {
-    this.setState({email:text})
-    this.props.emailChanged(text);
 
-  if(this.props.email===''||this.props.password===''|| text ===''){
-    this.setState({disabled:true})
+  onPhoneNumberChange(phoneNumber) {
+    this.setState({phoneNumber})
   }
-<<<<<<< HEAD
   onCodeInputChange(codeInput){
     this.setState({codeInput})
   }
@@ -125,11 +97,11 @@ class LoginForm extends Component {
     return {height : this.state.height/7,width:this.state.width*0.7}
   }
   sPortrait(){
-    return {width: 30 ,marginLeft : this.state.width/5.5 } //backgroundColor: 'green'
+    return {width: 30 ,marginLeft : this.state.width/5 } //backgroundColor: 'green'
   }
 
   sLandscape(){
-    return {width: 30,marginLeft: this.state.width/5.5 }
+    return {width: 30,marginLeft: this.state.width/5 }
   }
 
   flexStatusContainer(){
@@ -137,72 +109,9 @@ class LoginForm extends Component {
     return 11
     else
     return 8
-=======
-  else this.setState({disabled: false})
   }
-  onPasswordChange(text) {
-    this.setState({password:text})
-    this.props.passwordChanged(text);
 
-    if(this.props.email===''||this.props.password===''||text===''){
-      this.setState({disabled:true})
-    }
-    else this.setState({disabled: false})
-
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
-  }
-  onButtonPress() {
-    const { email, password,error } = this.props;
-    this.props.loginUser({ email, password });
-    this.setState({loading:false})
-  }
-  componentWillMount(){
-  //async storage fetch email
-  AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {    
-  this.setState({email:LoggedInWithEmail})
-  this.props.emailChanged(LoggedInWithEmail);
-  })
-}
-  componentDidMount(){
-let that = this
-  if(that.props.email===''||that.props.password===''){
-    that.setState({disabled:true})
-  }
-  else that.setState({disabled: false})
-}
-  getBackColor(){
-  if(this.state.disabled)
-  return '#E39291'
-  else
-  return '#fff'
-}
-
-  renderButton() {  
-    if (this.props.loading || this.state.loading) {
-      return <View style={{marginTop:30,height:40}}><Spinner size="large" /></View>;
-    }
-    return (
-      <TouchableOpacity
-        style={{
-          width: Dimensions.get('window').width*0.75,
-          borderRadius: 30,
-          borderWidth: 0.6,
-          borderColor: '#FE3562',
-          backgroundColor: this.getBackColor(),
-          height: Dimensions.get('window').height/13,
-          marginTop: 20,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        disabled={this.state.disabled}
-        onPress={this.onButtonPress.bind(this)}
-      >
-        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 20 , color :'#F65352'}}>Log In</Text>
-      </TouchableOpacity>
-    );
-  }
   render() {
-<<<<<<< HEAD
     const { user, confirmResult } = this.state;
    return (
 
@@ -258,7 +167,7 @@ let that = this
               
               this.state.height>this.state.width? this.fPortrait() : this.fLandscape()
             }
-            iStyle={{justifyContent:'flex-end'}}
+            iStyle={{}}
             height={this.state.height}
             width={this.state.width}
             keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'phone-pad'}
@@ -283,7 +192,7 @@ let that = this
           <Text style={[textStyle,{ margin: 12,marginTop:25,fontSize:18,fontFamily: 'AvenirNextCyr-Demi' }]}>
             Вам было отправлено СМС
           </Text>
-          <Text style={[textStyle,{marginTop: 14,fontSize: 16}]}>
+          <Text style={[textStyle,{marginTop: 18,fontSize: 16}]}>
             Введите в поле полученный
           </Text>
           <Text style={[textStyle,{marginTop: 4,fontSize: 16}]}>
@@ -291,7 +200,6 @@ let that = this
           </Text>
         </View>
         </KeyboardAvoidingView>: null}
-
         {user && (
           <View
             style={{
@@ -309,95 +217,14 @@ let that = this
     </View>
     
    )
-=======
-if(this.props.error==='Authentication Failed'){
-  Alert.alert(
-    'Попробуйте еще раз!',
-    'Неправильно введен email или пароль',
-    [
-      {text: 'Ok'},
-    ]
-  )
-  this.props.errorShowed()
-  if(this.props.email===''||this.props.password===''){
-    this.setState({disabled:true})
-  }
-  else this.setState({disabled: false})
-} 
-   return (
-      <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
-        <View style={styles.mainView}>
-        <KeyboardAvoidingView behavior='position'>
-        <Image source={require('../../assets/logo.png')} style={{marginTop: Dimensions.get('window').height*0.2,alignSelf:'center',width: Dimensions.get('window').width*0.8,height: Dimensions.get('window').height/9}}></Image>
-        <View
-          style={{
-          }}
-        >
-          <View style={{marginTop:80}}>
-          <InputLogin
-          placeholder='Email адрес'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-        />
-        <InputLogin
-          secureTextEntry
-          placeholder='Пароль'
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-        />
-          </View>
-          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
-        </View>
-        </KeyboardAvoidingView>
-        <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
-<View style={{flex:1}}>
-<TouchableOpacity onPress={()=>{Actions.forgotPass()}} style={{width : 105 ,height : 20,}}>
-        <Text style={{color:'#fff',fontSize:13,textDecorationLine: "underline",fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Забыли пароль? </Text>
-</TouchableOpacity>
-      </View>      
-      <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-      <View style={{height:1,marginRight:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
-      <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>или</Text>
-      <View style={{height:1,marginLeft:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
-        </View>
-         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-            <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Еще нет аккаунта? </Text>
-            
-            <TouchableOpacity style={{width : 160,height:20}} onPress={()=>{
-                
-                  Actions.register()
-            }}     
-              >
-            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Зарегистрироваться</Text></TouchableOpacity>
-      </View>
-        </View>
-        </View>
-
-      </Animated.View>
-    );
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
   }
 }
 
 const styles = {
-<<<<<<< HEAD
     container:{
       flex: 1,
       backgroundColor:'#e5385d',
     },
-=======
-  errorTextStyle: {
-    fontSize: 20,
-    color: '#FE3562',
-    alignSelf: 'center'
-  },
-  mainView: {
-    height:Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    opacity:1,
-    backgroundColor:'#F65352',  
-  }
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
 };
 
 const mapStateToProps = ({ auth }) => {
@@ -406,12 +233,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-<<<<<<< HEAD
-  authorizeUser
-=======
-  emailChanged,
-  passwordChanged,
-  loginUser,
-  errorShowed
->>>>>>> ab7cf74fe0e39500e48a657ede8a5143997bceb2
+  
 })(LoginForm);
