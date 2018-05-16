@@ -1,23 +1,23 @@
 import React, {Component} from 'react';
-import { View, Image, ActivityIndicator, AsyncStorage } from 'react-native';
-import LanguageForm from './LanguageForm';
-import LoginForm from './LoginForm';
+import { View, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
 
 class Initial extends Component {
   constructor(props) {
     super(props);
+
   }
 
-  componentWillMount(){
+  componentDidMount(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        firebase.auth().signOut()
         Actions.secondMain();
       } else {
         Actions.login();
       }
-    });
+    })
   }
   render() {
     return (
