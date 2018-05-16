@@ -17,6 +17,8 @@ import History from './components/History';
 import Ads from './components/Ads';
 import LoginForm from './components/LoginForm';
 
+import SecondTab from './components/SecondTab';
+
 class TabIconDonor extends Component {
   constructor(props){
     super(props)
@@ -141,7 +143,8 @@ class RouterComponent extends Component {
     return (
     <Router>
       <Scene key="root" hideNavBar>
-      <Scene key="initial" hideNavBar initial component ={Initial} />
+      <Scene key="initial" hideNavBar component ={Initial} />
+      <Scene key="secondTab" hideNavBar initial component ={SecondTab} />
       <Scene key='editProfile' component={EditProfile} />
       
       <Scene key="login" component={LoginForm} />
