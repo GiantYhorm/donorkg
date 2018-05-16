@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import {StatusBar,View, Image,Text,Easing, ActivityIndicator,Platform,Animated,TouchableWithoutFeedback, AsyncStorage} from 'react-native'
-import {Icon} from 'react-native-elements';
+import {Icon} from 'react-native-elements'
 import EditProfile from './components/EditProfile'
 import LanguageForm from './components/LanguageForm'
+import LoginForm from './components/LoginForm'
 import PrivatePolicy from './components/PrivatePolicy'
-import Initial from './components/Initial'
+import Register4 from './components/Register4'
 import ForgotPass from './components/ForgotPass'
 import ProfileView from './components/ProfileView'
 import firebase from 'firebase'
@@ -15,7 +16,7 @@ import ThirdMain from './components/ThirdMain'
 import ModalScreen from './ModalScreen'
 import History from './components/History';
 import Ads from './components/Ads';
-import LoginForm from './components/LoginForm';
+
 
 class TabIconDonor extends Component {
   constructor(props){
@@ -141,14 +142,16 @@ class RouterComponent extends Component {
     return (
     <Router>
       <Scene key="root" hideNavBar>
-      <Scene key="initial" hideNavBar initial component ={Initial} />
+
       <Scene key='editProfile' component={EditProfile} />
-      
-      <Scene key="login" component={LoginForm} />
+
+
       <Scene key='ads' component={Ads} hideNavBar={false} title='Реклама' />
 
       <Scene key='history' component={History} hideNavBar={false} title='История' />
 
+        <Scene key='login' initial={this.state.user==='0'} component={LoginForm} />
+        <Scene key='register' component={Register4} />
         <Scene key='profileView' component={ProfileView} />
         <Scene key='lang' component={LanguageForm} />
         <Scene key='forgotPass' component= {ForgotPass} />
@@ -157,6 +160,7 @@ class RouterComponent extends Component {
           key="tabbar"
           tabs={true}
           swipeEnabled={false}
+          initial={this.state.user === '1'}
           showLabel={false}
           tabBarStyle={{ backgroundColor: '#fff' }}
           tabBarPosition='bottom'

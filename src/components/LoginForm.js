@@ -1,84 +1,175 @@
 import React, { Component } from 'react'
-import { View,Text,Dimensions } from 'react-native'
+import { Text,Image,ImageBackground,KeyboardAvoidingView,Platform,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import {  } from '../actions'
-import {  } from './common'
+import { emailChanged, passwordChanged, loginUser,errorShowed } from '../actions'
+import { InputLogin, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
-import Image from 'react-native-image-progress'
-import ProgressBar from 'react-native-progress/Bar';
-import { c,d } from '../Variables';
-import { Input } from './common';
-
-const logoUri = require('../assets/logo.png');
-
 
 class LoginForm extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      phoneNumberActive: false,
-      phoneNumber: '',
       loading: false,
-      width: '',
-      height: ''
+      logo : null,
+      email : '',
+      password : '',
+      background : null,
+      loadingComponent : true,
+      opacityValue: new Animated.Value(1),
+      disabled : false
+    };
+  }
+  onEmailChange(text) {
+    this.setState({email:text})
+    this.props.emailChanged(text);
+
+  if(this.props.email===''||this.props.password===''|| text ===''){
+    this.setState({disabled:true})
+  }
+  else this.setState({disabled: false})
+  }
+  onPasswordChange(text) {
+    this.setState({password:text})
+    this.props.passwordChanged(text);
+
+    if(this.props.email===''||this.props.password===''||text===''){
+      this.setState({disabled:true})
     }
+    else this.setState({disabled: false})
+
   }
-
-  onPhoneNumberChange(phoneNumber) {
-    this.setState({phoneNumber})
+  onButtonPress() {
+    const { email, password,error } = this.props;
+    this.props.loginUser({ email, password });
+    this.setState({loading:false})
   }
-
-
-  loginSubmit(){
-    console.log('asdwad')
+  componentWillMount(){
+  //async storage fetch email
+  AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {    
+  this.setState({email:LoggedInWithEmail})
+  this.props.emailChanged(LoggedInWithEmail);
+  })
+}
+  componentDidMount(){
+let that = this
+  if(that.props.email===''||that.props.password===''){
+    that.setState({disabled:true})
   }
+  else that.setState({disabled: false})
+}
+  getBackColor(){
+  if(this.state.disabled)
+  return '#E39291'
+  else
+  return '#fff'
+}
 
+  renderButton() {  
+    if (this.props.loading || this.state.loading) {
+      return <View style={{marginTop:30,height:40}}><Spinner size="large" /></View>;
+    }
+    return (
+      <TouchableOpacity
+        style={{
+          width: Dimensions.get('window').width*0.75,
+          borderRadius: 30,
+          borderWidth: 0.6,
+          borderColor: '#FE3562',
+          backgroundColor: this.getBackColor(),
+          height: Dimensions.get('window').height/13,
+          marginTop: 20,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        disabled={this.state.disabled}
+        onPress={this.onButtonPress.bind(this)}
+      >
+        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 20 , color :'#F65352'}}>Log In</Text>
+      </TouchableOpacity>
+    );
+  }
   render() {
+if(this.props.error==='Authentication Failed'){
+  Alert.alert(
+    'Попробуйте еще раз!',
+    'Неправильно введен email или пароль',
+    [
+      {text: 'Ok'},
+    ]
+  )
+  this.props.errorShowed()
+  if(this.props.email===''||this.props.password===''){
+    this.setState({disabled:true})
+  }
+  else this.setState({disabled: false})
+} 
    return (
-
-    <View style={styles.container}  onLayout={(e)=>{
-        this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})
-    }}
-    >
-      <View style={{ alignItems: 'center',flex: 4,justifyContent: 'flex-end'}}>
-        <Image source={logoUri}
-          indicator={ProgressBar}
-          style={{ marginRight: this.state.height>this.state.width ? this.state.width/1.5 : this.state.width/3 }}
-          imageStyle={{
-            color:'#fff',
-            width: 240, 
-            height: 45, 
-            resizeMode: 'stretch',
-        }}  />
-      </View>
-      <View style={{ flex: 2 }}>
-      
-      </View>
-      <View style={{ flex: 8,alignItems:'center',justifyContent: 'flex-start' }}>
-        <Input
-            onChangeText={(phoneNumber) => this.onPhoneNumberChange(phoneNumber)}
-            value={this.state.phoneNumber}
-            placeholder='+996 772 798 807'
-            iconName='phone'
-            active={this.state.phoneNumberActive}
-            onFocus={() => this.setState({ phoneNumberActive: true })}
-            loading={this.state.loading}
-            style={{  }}
-            onLoginSubmit={this.loginSubmit.bind(this)}
+      <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
+        <View style={styles.mainView}>
+        <KeyboardAvoidingView behavior='position'>
+        <Image source={require('../../assets/logo.png')} style={{marginTop: Dimensions.get('window').height*0.2,alignSelf:'center',width: Dimensions.get('window').width*0.8,height: Dimensions.get('window').height/9}}></Image>
+        <View
+          style={{
+          }}
+        >
+          <View style={{marginTop:80}}>
+          <InputLogin
+          placeholder='Email адрес'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
         />
+        <InputLogin
+          secureTextEntry
+          placeholder='Пароль'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+          </View>
+          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
+        </View>
+        </KeyboardAvoidingView>
+        <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
+<View style={{flex:1}}>
+<TouchableOpacity onPress={()=>{Actions.forgotPass()}} style={{width : 105 ,height : 20,}}>
+        <Text style={{color:'#fff',fontSize:13,textDecorationLine: "underline",fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Забыли пароль? </Text>
+</TouchableOpacity>
+      </View>      
+      <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+      <View style={{height:1,marginRight:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
+      <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>или</Text>
+      <View style={{height:1,marginLeft:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
+        </View>
+         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+            <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Еще нет аккаунта? </Text>
+            
+            <TouchableOpacity style={{width : 160,height:20}} onPress={()=>{
+                
+                  Actions.register()
+            }}     
+              >
+            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Зарегистрироваться</Text></TouchableOpacity>
       </View>
-    </View>
-    
-   )
+        </View>
+        </View>
+
+      </Animated.View>
+    );
   }
 }
 
 const styles = {
-    container:{
-      flex: 1,
-      backgroundColor:'#e5385d',
-    }
+  errorTextStyle: {
+    fontSize: 20,
+    color: '#FE3562',
+    alignSelf: 'center'
+  },
+  mainView: {
+    height:Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    opacity:1,
+    backgroundColor:'#F65352',  
+  }
 };
 
 const mapStateToProps = ({ auth }) => {
@@ -87,5 +178,8 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-
+  emailChanged,
+  passwordChanged,
+  loginUser,
+  errorShowed
 })(LoginForm);
