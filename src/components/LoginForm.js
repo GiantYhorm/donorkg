@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import { View,Text,Platform,KeyboardAvoidingView, Animated } from 'react-native'
-import { connect } from 'react-redux'
-import {  } from './common'
+import { View,Text,Platform,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux'
 import Image from 'react-native-image-progress'
 import ProgressBar from 'react-native-progress/Bar';
 import { Input } from './common';
 import TextInputMask from 'react-native-text-input-mask';
-import {textStyle} from '../Variables'
+import {textStyle,WHITE} from '../Variables'
+import Modal from "react-native-modal";
+import Icon from 'react-native-vector-icons/Feather';
 
 const logoUri = require('../assets/logo.png');
 
@@ -26,7 +27,8 @@ class LoginForm extends Component {
       message: '',
       confirmResult: null,
       codeInput: '',
-      codeInputActive: false
+      codeInputActive: false,
+      isModalVisible : false
     }
   }
 
@@ -34,8 +36,7 @@ class LoginForm extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
       } else {
-        // User has been signed out, reset the state
-        this.setState({
+      this.setState({
           user: null,
           message: '',
           codeInput: '',
@@ -47,15 +48,14 @@ class LoginForm extends Component {
   }
 
   componentWillUnmount() {
+    StatusBar.setHidden(true);
      if (this.unsubscribe) this.unsubscribe();
   }
 
   signIn = () => {
     const { phoneNumber } = this.state;
-    this.setState({ message: 'Sending code ...' });
-
     firebase.auth().signInWithPhoneNumber(phoneNumber)
-      .then(confirmResult => this.setState({ confirmResult, message: 'Code has been sent!' }))
+      .then(confirmResult => this.setState({ isModalVisible:true,confirmResult}))
       .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
   };
 
@@ -82,9 +82,6 @@ class LoginForm extends Component {
     this.setState({codeInput})
   }
 
-  loginSubmit(){
-    this.signIn()
-  }
   codeSubmit(){
     this.confirmCode()
   }
@@ -132,7 +129,7 @@ class LoginForm extends Component {
       <View style={{ flex: 3 }}>
       
       </View>
-      {!user && !confirmResult ? <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
+      <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
         <Input
             mask={"+996 [000] [00] [00] [00]"}
             onChangeText={(phoneNumber) => this.onPhoneNumberChange(phoneNumber)}
@@ -151,11 +148,48 @@ class LoginForm extends Component {
             loading={this.state.loading}
             style={{ textAlign: 'center', }}
             keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'phone-pad'}
-            onLoginSubmit={this.loginSubmit.bind(this)}
+            onLoginSubmit={this.signIn.bind(this)}
             loading={false}
         />
-      </KeyboardAvoidingView>:null}
-      {!user && confirmResult ? <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
+      </KeyboardAvoidingView>
+       
+      <Modal hideModalContentWhileAnimating swipeDirection='down'   onSwipe={() => this.setState({ isModalVisible: false })}  isVisible={this.state.isModalVisible} style={{flex:1,justifyContent: "flex-end", margin: 0}}>
+      <View style={styles.container}  onLayout={(e)=>{
+        this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})
+    }}
+    >
+      <View style={{ flex: this.flexStatusContainer(),}}>
+        
+        <View style={{flex : 1,}}>
+          <TouchableOpacity onPress={()=>this.setState({isModalVisible:false})}
+    style={{ backgroundColor: WHITE,
+    height: 45,
+    width: 45,
+    borderRadius: 45 / 2,
+    marginRight: 3,
+    justifyContent: 'center',
+    alignItems: 'center',}}>
+            <Icon name='arrow-down' style={{ color: '#fff' }} size={20} />
+         </TouchableOpacity>
+        </View>
+
+        <View style={{flex : 1 , justifyContent: 'flex-end',alignItems:'center'}}>
+          <Image source={logoUri}
+           indicator={ProgressBar}
+            style={{ marginRight: this.state.height>this.state.width ? this.state.width/1.5 : this.state.width/3 }}
+            imageStyle={{
+             width: 240, 
+             height: 45, 
+             resizeMode: 'stretch',
+         }}  />
+        </View>
+     
+      </View>
+     
+      <View style={{ flex: 3 }}>
+      
+      </View>
+       <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
         <Input
         mask={" [0]  [0]  [0]  [0]  [0]  [0]"}
             onChangeText={(codeInput) => this.onCodeInputChange(codeInput)}
@@ -199,21 +233,10 @@ class LoginForm extends Component {
             код подтверждения
           </Text>
         </View>
-        </KeyboardAvoidingView>: null}
-        {user && (
-          <View
-            style={{
-              padding: 15,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#77dd77',
-              flex: 1,
-            }}
-          >
-            <Text style={{ fontSize: 25 }}>Signed In!</Text>
-          
-          </View>
-        )}
+        </KeyboardAvoidingView>
+        </View>
+        </Modal>
+   
     </View>
     
    )
