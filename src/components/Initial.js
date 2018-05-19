@@ -2,17 +2,16 @@ import React, {Component} from 'react';
 import { View, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
+import { fetchUserData } from '../actions'
 
 class Initial extends Component {
-  constructor(props) {
-    super(props);
-
-  }
 
   componentDidMount(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        firebase.auth().signOut()
+        this.props.fetchUserData();
+        Actions.tabView();
       } else {
         Actions.login();
       }
@@ -27,4 +26,11 @@ class Initial extends Component {
   }
 }
 
-export default Initial;
+const mapStateToProps = ({ main }) => {
+  const { user } = main;
+  return { user };
+};
+
+export default connect(mapStateToProps, {
+  fetchUserData,
+})(Initial);

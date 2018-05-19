@@ -8,7 +8,6 @@ import firebase from 'firebase';
 
 import LoginForm from './components/LoginForm';
 
-
 class RouterComponent extends Component {
 
 
@@ -22,7 +21,6 @@ class RouterComponent extends Component {
       <Scene key="root" hideNavBar>
       <Scene key="initial" hideNavBar initial component ={Initial} />
       <Scene key="login" component={LoginForm} />
-        
       </Scene>
     </Router>
     )

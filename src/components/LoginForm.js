@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { View,Text,Platform,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native'
+import { View,Text,Platform,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux'
-import Image from 'react-native-image-progress'
+import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import { Input } from './common';
 import TextInputMask from 'react-native-text-input-mask';
-import {textStyle,WHITE} from '../Variables'
+import {textStyle,WHITE} from '../Variables';
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/Feather';
+import { fetchUserData } from '../actions'
 
 const logoUri = require('../assets/logo.png');
 
@@ -18,7 +19,7 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       phoneNumberActive: false,
-      phoneNumber: '+996555232307',
+      phoneNumber: '+996553113555',
       loading: false,
       width: '',
       height: '',
@@ -40,7 +41,7 @@ class LoginForm extends Component {
           user: null,
           message: '',
           codeInput: '',
-          phoneNumber: '+996555232307',
+          phoneNumber: '+996553113555',
           confirmResult: null,
         });
       }
@@ -61,11 +62,12 @@ class LoginForm extends Component {
 
   confirmCode = () => {
     const { codeInput, confirmResult } = this.state;
-
+    
     if (confirmResult && codeInput.length) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          this.setState({ message: 'Code Confirmed!' });
+          console.log(user)
+          this.setState({ isModalVisible:false,message: 'Code Confirmed!' });
         })
         .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
     }
@@ -82,9 +84,6 @@ class LoginForm extends Component {
     this.setState({codeInput})
   }
 
-  codeSubmit(){
-    this.confirmCode()
-  }
 
   fPortrait(){
     return {height : this.state.height/13,width : this.state.width*0.9}
@@ -209,7 +208,7 @@ class LoginForm extends Component {
             onFocus={() => this.setState({ codeInputActive: true })}
             loading={this.state.loading}
             style={   this.state.height>this.state.width? this.sPortrait() : this.sLandscape()}
-            onLoginSubmit={this.codeSubmit.bind(this)}
+            onLoginSubmit={this.confirmCode.bind(this)}
             loading={false}
         /> 
     
@@ -250,11 +249,12 @@ const styles = {
     },
 };
 
-const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading } = auth;
-  return { email, password, error, loading };
+const mapStateToProps = ({ main }) => {
+  const { user } = main;
+  return { user };
 };
 
 export default connect(mapStateToProps, {
-  
+  fetchUserData,
 })(LoginForm);
+
