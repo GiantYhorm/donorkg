@@ -5,13 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Animated
+  Animated,
+  TextInput
 } from 'react-native';
 import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import {textStyle} from '../Variables';
-import { Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -42,6 +43,16 @@ class SecondTab extends Component {
           { key: 'third', title: 'Доноры' },
         ],
         currentStep: '0',
+
+        firstName: `ыва`,
+        lastName: `ыва`,
+        patronymic: `ыва`,
+        bloodType: `0`,
+        rhFactor: `0`,
+        currentRole: ``,
+
+
+        error: ''
       }
     }
 
@@ -83,6 +94,11 @@ class SecondTab extends Component {
         return RED
       return '#D0D0D0'
     }
+    getBloodTypeColor(selected,buttonNumber){
+      if(selected===buttonNumber)
+        return RED
+      return '#D0D0D0'
+    }
 
 
     renderCircles(){
@@ -91,32 +107,186 @@ class SecondTab extends Component {
           <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'0') }]} />
           <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'1') }]} />
           <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'2') }]} /> 
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'3') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'4') }]} /> 
         </View>
       )
     }
 
     renderSteps(){
-      if(this.state.currentStep==='0')
+      if(this.state.currentStep === '0')
       return(
             <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
               
               <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Добро пожаловать!</Text>
               <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>Вы еще не заполнили свою анкету.</Text>
               <TouchableOpacity onPress={()=>this.setState({ currentStep: '1' })} style={styles.joinButton}>
-                <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Заполнить</Text>
+                <Text style={[textStyle,{fontSize:18,color : '#fff'}]}>Заполнить</Text>
               </TouchableOpacity>
    
             </View>
       )
-      else if(this.state.currentStep==='1')
+      else if(this.state.currentStep === '1')
       return(
-        <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
-        
-        <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Добро пожаловать!</Text>
-        <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>Вы еще не заполнили свою анкету.</Text>
-        <TouchableOpacity onPress={()=>this.setState({ currentStep: '1' })} style={styles.joinButton}>
-          <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Заполнить</Text>
+      <View style={{ flex:14, justifyContent:'center', alignItems:'center' }}>
+
+        <KeyboardAwareScrollView
+        style={{ backgroundColor: '#4c69a5' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+      >
+
+        <TextInput
+          spellCheck={false}
+          style={textStyle}
+          autoCorrect={false}
+          underlineColorAndroid='transparent'
+          placeholder="Фамилия"
+          onChangeText={(lastName)=>this.setState({ lastName })}
+          value={this.state.lastName}
+          style={[styles.input,{ width: this.state.width/1.5 }]}
+        />
+        <TextInput
+        style={textStyle}
+          spellCheck={false}
+          autoCorrect={false}
+          onChangeText={(firstName)=>this.setState({ firstName })}
+          value={this.state.firstName}
+          underlineColorAndroid='transparent'
+          placeholder="Имя"
+          style={[styles.input,{ width: this.state.width/1.5 }]}
+        />
+        <TextInput
+        style={textStyle}
+          spellCheck={false}
+          autoCorrect={false}
+          onChangeText={(patronymic)=>this.setState({ patronymic })}
+          value={this.state.patronymic}
+          underlineColorAndroid='transparent'
+          placeholder="Отчество"
+          style={[styles.input,{ width: this.state.width/1.5 }]}
+        />
+
+      </KeyboardAwareScrollView>
+      {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
+      <TouchableOpacity onPress={()=>{ 
+        if(this.state.firstName!=='' && this.state.lastName!==''&&this.state.patronymic){
+          this.setState({ currentStep: '2', error: '' })
+        }
+        else {
+          this.setState({ error: 'Все поля являются обязательными' })
+        }
+      }} style={[styles.joinButton,{marginBottom: 40}]}>
+       <Text style={[textStyle,{fontSize:18,color : '#fff'}]}>Дальше</Text>
+      </TouchableOpacity>
+    </View>
+      )
+      else if(this.state.currentStep==='2'){
+        return(
+          <View style={{ flex:15, alignItems:'center' }}>
+            <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
+          <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'O' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+            <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'O')} size={47} /> 
+            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'O'),fontSize:22}]}>O</Text>   
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'A' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'A')} size={47} /> 
+            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'A'),fontSize:22}]}>A</Text>   
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'B' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'B')} size={47} /> 
+            <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.bloodType,'B'),fontSize:22}]}>B</Text>   
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'AB' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'AB')} size={47} /> 
+            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'AB'),fontSize:22}]}>AB</Text>   
+          </TouchableOpacity>
+          </View>
+
+          <View style={{flex:1}}>
+          {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
+          </View>
+          <View style={{flex:7}}>
+          <TouchableOpacity onPress={()=>{ 
+                if(this.state.bloodType!=='0'){
+                  this.setState({ currentStep: '3', error: '' })
+                }
+                else {
+                  this.setState({ error: 'Выберите один тип крови' })
+                }
+           }} style={[styles.joinButton,{marginBottom: 70}]}>
+           <Text style={[textStyle,{fontSize:18,color : '#fff'}]}>Дальше</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+        )
+      }
+      else if(this.state.currentStep==='3'){
+        return(
+          <View style={{ flex:15, alignItems:'center' }}>
+                      <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
+                      <TouchableOpacity onPress={()=>{ this.setState({ rhFactor: '+' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+                      <Icon type='feather' name='plus' color={this.getBloodTypeColor(this.state.rhFactor,'+')} size={47} /> 
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={()=>{ this.setState({ rhFactor: '-' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+
+                      <Icon type='feather' name='minus' color={this.getBloodTypeColor(this.state.rhFactor,'-')} size={47} /> 
+                      </TouchableOpacity>
+          
+          </View>
+
+          <View style={{flex:1}}>
+          {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
+
+          </View>
+
+          <View style={{flex:7}}>
+          <TouchableOpacity onPress={()=>{ 
+                if(this.state.rhFactor!=='0'){
+                  this.setState({ currentStep: '4', error: '' })
+                }
+                else {
+                  this.setState({ error: 'Выберите один резус-фактор' })
+                }
+           }} style={[styles.joinButton,{marginBottom: 70}]}>
+           <Text style={[textStyle,{fontSize:18,color : '#fff'}]}>Дальше</Text>
+          </TouchableOpacity>
+          </View>
+
+        </View>
+        )
+      }
+      return(
+        <View style={{ flex:15, alignItems:'center' }}>
+                    <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
+                    <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'donor' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+                      <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.currentRole,'donor')}]}>Донор</Text>
+                     </TouchableOpacity>
+                     <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'recipient' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+                     <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.currentRole,'recipient')}]}>Реципиент</Text>
+                    </TouchableOpacity>
+        </View>
+
+        <View style={{flex:1}}>
+        {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
+        </View>
+
+        <View style={{flex:7}}>
+        <TouchableOpacity onPress={()=>{ 
+              if(this.state.rhFactor!=='0'){
+                this.setState({ currentStep: '5',error: '' })
+              }
+              else {
+                this.setState({ error: 'Выберите хоть одну роль' })
+              }
+         }} style={[styles.joinButton,{marginBottom: 70}]}>
+         <Text style={[textStyle,{fontSize:18,color : '#fff'}]}>Закончить</Text>
         </TouchableOpacity>
+        </View>
 
       </View>
       )
@@ -140,6 +310,32 @@ class SecondTab extends Component {
           <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
         </View>
       )
+      else if(this.state.currentStep === '1')
+      return(
+        <View style={{ height: 200,width:this.state.width,justifyContent: 'center',alignItems:'center'}}>
+          <Text style={[textStyle,{fontSize: 24}]}>Пожалуйста, заполните</Text>
+          <Text style={[textStyle,{fontSize: 24}]}>все поля для анкеты</Text>
+        </View>
+      )
+      else if(this.state.currentStep === '2')
+      return(
+        <View style={{ height: 200,width:this.state.width,justifyContent: 'center',alignItems:'center'}}>
+          <Text style={[textStyle,{fontSize: 24}]}>Какой у вас тип крови?</Text>
+        </View>
+      )
+      else if(this.state.currentStep === '3')
+      return(
+        <View style={{ height: 200,width:this.state.width,justifyContent: 'center',alignItems:'center'}}>
+          <Text style={[textStyle,{fontSize: 24}]}>Какой у вас резус-фактор?</Text>
+        </View>
+      )
+       else if(this.state.currentStep === '4')
+      return(
+        <View style={{ height: 200,width:this.state.width,justifyContent: 'center',alignItems:'center'}}>
+          <Text style={[textStyle,{fontSize: 24}]}>Кем вы хотите быть сейчас</Text>
+          <Text style={[textStyle,{fontSize: 24}]}>в этом приложении?</Text>
+        </View>
+      )
     }
     renderContent(){
       if(typeof this.props.bloodType === 'undefined'){
@@ -160,7 +356,7 @@ class SecondTab extends Component {
   )  
       }
       return(
-      <View style={styles.container} onLayout={(e)=>{this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})}}>
+      <View style={styles.container}>
 
         <TabViewAnimated
           navigationState={this.state}
@@ -178,7 +374,9 @@ class SecondTab extends Component {
     }
   render() {
     return (
-      this.renderContent()
+      <View style={styles.container} onLayout={(e)=>{this.setState({ height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width })}}>
+        {this.renderContent()} 
+      </View>
     );
   }
 }
@@ -187,6 +385,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  bloodType:{
+    marginRight: 32,
   },
   inContainer: {
     flex: 15,
@@ -197,16 +398,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     elevation: 0,
   },
+  input: {
+    height: 50,
+    borderBottomWidth: 0.4
+  },
   labelStyle: {
     color: RED,
     fontSize: 13,
     paddingVertical: 10
   },
   circle: {
-    width: 15,
-    height: 15,
+    width: 13,
+    height: 13,
     borderRadius: 15/2,
-    marginRight: 10
+    marginRight: 9
   },
   joinButton: {
     width: 170,
