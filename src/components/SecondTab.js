@@ -83,20 +83,41 @@ class SecondTab extends Component {
       return '#D0D0D0'
     }
 
-    getCircleMargin(circleNumber){
-      if(circleNumber==='0')
-        return 10
-      else if(circleNumber==='2')
-        return -10
-    }
 
     renderCircles(){
       return(
         <View style={{flex : 1, flexDirection:'row',justifyContent: 'center', alignItems: 'center' }}>
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'0'), marginRight: this.getCircleMargin('0') }]} />
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'1'), marginRight: this.getCircleMargin('1') }]} />
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'2'), marginRight: this.getCircleMargin('2') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'0') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'1') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'2') }]} /> 
         </View>
+      )
+    }
+
+    renderSteps(){
+      if(this.state.currentStep==='0')
+      return(
+            <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
+              
+              <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Добро пожаловать!</Text>
+              <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>Вы еще не заполнили свою анкету.</Text>
+              <TouchableOpacity onPress={()=>this.setState({ currentStep: '1' })} style={styles.joinButton}>
+                <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Заполнить</Text>
+              </TouchableOpacity>
+   
+            </View>
+      )
+      else if(this.state.currentStep==='1')
+      return(
+        <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
+        
+        <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Добро пожаловать!</Text>
+        <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>Вы еще не заполнили свою анкету.</Text>
+        <TouchableOpacity onPress={()=>this.setState({ currentStep: '1' })} style={styles.joinButton}>
+          <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Заполнить</Text>
+        </TouchableOpacity>
+
+      </View>
       )
     }
 
@@ -106,7 +127,7 @@ class SecondTab extends Component {
           <View style={styles.container}>
   
             <View style={{ flex:12, }}>
-              <View style={{flex: 1}}>
+              <View style={{height:70}}>
                 {this.renderCircles()}
               </View>
               <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
@@ -114,15 +135,8 @@ class SecondTab extends Component {
               </View>
             </View>
             
-            <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
-              
-              <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Welcome!</Text>
-              <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>You haven't filled out our questionnaire yet.</Text>
-              <TouchableOpacity style={styles.joinButton}>
-                <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Join Us!</Text>
-              </TouchableOpacity>
-   
-            </View>
+            {this.renderSteps()}
+            
           </View>
   )  
       }
@@ -173,6 +187,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 15/2,
+    marginRight: 10
   },
   joinButton: {
     width: 170,

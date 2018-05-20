@@ -19,7 +19,7 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       phoneNumberActive: false,
-      phoneNumber: '+996555232307',
+      phoneNumber: '+996553113555',
       loading: false,
       width: '',
       height: '',
@@ -42,7 +42,7 @@ class LoginForm extends Component {
           user: null,
           message: '',
           codeInput: '',
-          phoneNumber: '+996555232307',
+          phoneNumber: '+996553113555',
           confirmResult: null,
         });
       }
@@ -55,11 +55,12 @@ class LoginForm extends Component {
   }
 
   signIn = () => {
-    this.setState({loading : true})
+    this.setState({loading: true})
     const { phoneNumber } = this.state;
+  
     firebase.auth().signInWithPhoneNumber(phoneNumber)
       .then(confirmResult => this.setState({ isModalVisible:true,confirmResult,loading: false}))
-      .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
+      .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}`,loading: false }));
   };
 
   confirmCode = () => {
