@@ -4,10 +4,12 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { SCREEN_WIDTH, GREEN } from '../../Variables';
+import { SCREEN_WIDTH, WHITE } from '../../Variables';
+import TextInputMask from 'react-native-text-input-mask';
 
 const Input = (props) => {
   let containerStyle = props.active ? styles.containerActive : styles.containerInactive;
@@ -34,20 +36,22 @@ const Input = (props) => {
   };
 
   return (
-    <View style={containerStyle}>
-      <View style={styles.iconContainer}>
+    <View style={[containerStyle,props.cStyle]}>
+      <View style={[styles.iconContainer,props.iStyle]}>
         <Icon name={props.iconName} style={iconStyle} size={20} />
       </View>
-      <TextInput
+      <TextInputMask
+        mask={props.mask}
+        onSubmitEditing={props.unFocus}
         onChangeText={props.onChangeText}
         value={props.value}
         placeholder={props.placeholder}
         secureTextEntry={props.secureTextEntry}
         style={[inputStyle, props.style]}
         spellCheck={false}
+        placeholderTextColor='#ffffff85'
         autoCorrect={false}
         underlineColorAndroid='transparent'
-        placeholderTextColor='#ffffff80'
         onFocus={props.onFocus}
         keyboardType={props.keyboardType}
       />
@@ -78,12 +82,10 @@ const styles = StyleSheet.create({
   inputInactive: {
     flex: 8,
     color: '#ffffff',
-    textAlign: 'center',
   },
   inputActive: {
     flex: 8,
-    color: GREEN,
-    textAlign: 'center',
+    color: 'black',
   },
   iconContainer: {
     flex: 2,
@@ -94,10 +96,10 @@ const styles = StyleSheet.create({
     color: '#ffffff80',
   },
   iconActive: {
-    color: GREEN,
+    color: WHITE,
   },
   submit: {
-    backgroundColor: GREEN,
+    backgroundColor: WHITE,
     height: 45,
     width: 45,
     borderRadius: 45 / 2,
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitInactive: {
-    backgroundColor: '#2ad2ac50',
+    backgroundColor: '#e5385d50',
     height: 45,
     width: 45,
     borderRadius: 45 / 2,

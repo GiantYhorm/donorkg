@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>0.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -64,6 +64,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>AvenirNextLTPro-Demi.otf</string>
+		<string>AvenirNextLTPro-Regular.otf</string>
+		<string>AvenirNextCyr-Demi.ttf</string>
+		<string>AvenirNextCyr-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

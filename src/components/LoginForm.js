@@ -1,73 +1,241 @@
 import React, { Component } from 'react'
-import { View,Text,Dimensions } from 'react-native'
-import { connect } from 'react-redux'
-import {  } from '../actions'
-import {  } from './common'
-import firebase from 'firebase'
+import { View,Text,Platform,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux'
-import Image from 'react-native-image-progress'
+import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
-import { c,d } from '../Variables';
 import { Input } from './common';
+import TextInputMask from 'react-native-text-input-mask';
+import {textStyle,WHITE} from '../Variables';
+import Modal from "react-native-modal";
+import Icon from 'react-native-vector-icons/Feather';
+import { fetchUserData } from '../actions'
 
 const logoUri = require('../assets/logo.png');
-
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       phoneNumberActive: false,
-      phoneNumber: '',
+      phoneNumber: '+996553113555',
       loading: false,
       width: '',
-      height: ''
+      height: '',
+
+      user: null,
+      message: '',
+      confirmResult: null,
+      codeInput: '',
+      codeInputActive: false,
+      isModalVisible : false
     }
+  }
+
+  componentDidMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+      } else {
+      this.setState({
+          user: null,
+          message: '',
+          codeInput: '',
+          phoneNumber: '+996553113555',
+          confirmResult: null,
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    StatusBar.setHidden(true);
+     if (this.unsubscribe) this.unsubscribe();
+  }
+
+  signIn = () => {
+    const { phoneNumber } = this.state;
+    firebase.auth().signInWithPhoneNumber(phoneNumber)
+      .then(confirmResult => this.setState({ isModalVisible:true,confirmResult}))
+      .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
+  };
+
+  confirmCode = () => {
+    const { codeInput, confirmResult } = this.state;
+    
+    if (confirmResult && codeInput.length) {
+      confirmResult.confirm(codeInput)
+        .then((user) => {
+          console.log(user)
+          this.setState({ isModalVisible:false,message: 'Code Confirmed!' });
+        })
+        .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
+    }
+  };
+
+  signOut = () => {
+    firebase.auth().signOut();
   }
 
   onPhoneNumberChange(phoneNumber) {
     this.setState({phoneNumber})
   }
+  onCodeInputChange(codeInput){
+    this.setState({codeInput})
+  }
 
 
-  loginSubmit(){
-    console.log('asdwad')
+  fPortrait(){
+    return {height : this.state.height/13,width : this.state.width*0.9}
+  }
+
+  fLandscape(){
+    return {height : this.state.height/7,width:this.state.width*0.7}
+  }
+  sPortrait(){
+    return {width: 30 ,marginLeft : this.state.width/5 } //backgroundColor: 'green'
+  }
+
+  sLandscape(){
+    return {width: 30,marginLeft: this.state.width/5 }
+  }
+
+  flexStatusContainer(){
+    if(!this.state.user && !this.state.confirmResult)
+    return 11
+    else
+    return 8
   }
 
   render() {
+    const { user, confirmResult } = this.state;
    return (
 
     <View style={styles.container}  onLayout={(e)=>{
         this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})
     }}
     >
-      <View style={{ alignItems: 'center',flex: 4,justifyContent: 'flex-end'}}>
+      <View style={{ alignItems: 'center',flex: this.flexStatusContainer(),justifyContent: 'flex-end'}}>
         <Image source={logoUri}
           indicator={ProgressBar}
           style={{ marginRight: this.state.height>this.state.width ? this.state.width/1.5 : this.state.width/3 }}
           imageStyle={{
-            color:'#fff',
             width: 240, 
             height: 45, 
             resizeMode: 'stretch',
         }}  />
       </View>
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 3 }}>
       
       </View>
-      <View style={{ flex: 8,alignItems:'center',justifyContent: 'flex-start' }}>
+      <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
         <Input
+            mask={"+996 [000] [00] [00] [00]"}
             onChangeText={(phoneNumber) => this.onPhoneNumberChange(phoneNumber)}
             value={this.state.phoneNumber}
-            placeholder='+996 772 798 807'
+            unFocus={()=>{if(this.state.phoneNumber==='')this.setState({phoneNumberActive: false})}}
+            placeholder='+996 XXX XXX XXX'
             iconName='phone'
+            height={this.state.height}
+            width={this.state.width}
+            cStyle={ 
+              
+              this.state.height>this.state.width? this.fPortrait() : this.fLandscape()
+            }
             active={this.state.phoneNumberActive}
             onFocus={() => this.setState({ phoneNumberActive: true })}
             loading={this.state.loading}
-            style={{  }}
-            onLoginSubmit={this.loginSubmit.bind(this)}
+            style={{ textAlign: 'center', }}
+            keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'phone-pad'}
+            onLoginSubmit={this.signIn.bind(this)}
+            loading={false}
         />
+      </KeyboardAvoidingView>
+       
+      <Modal hideModalContentWhileAnimating swipeDirection='down'   onSwipe={() => this.setState({ isModalVisible: false })}  isVisible={this.state.isModalVisible} style={{flex:1,justifyContent: "flex-end", margin: 0}}>
+      <View style={styles.container}  onLayout={(e)=>{
+        this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})
+    }}
+    >
+      <View style={{ flex: this.flexStatusContainer(),}}>
+        
+        <View style={{flex : 1,}}>
+          <TouchableOpacity onPress={()=>this.setState({isModalVisible:false})}
+    style={{ backgroundColor: WHITE,
+    height: 45,
+    width: 45,
+    borderRadius: 45 / 2,
+    marginRight: 3,
+    justifyContent: 'center',
+    alignItems: 'center',}}>
+            <Icon name='arrow-down' style={{ color: '#fff' }} size={20} />
+         </TouchableOpacity>
+        </View>
+
+        <View style={{flex : 1 , justifyContent: 'flex-end',alignItems:'center'}}>
+          <Image source={logoUri}
+           indicator={ProgressBar}
+            style={{ marginRight: this.state.height>this.state.width ? this.state.width/1.5 : this.state.width/3 }}
+            imageStyle={{
+             width: 240, 
+             height: 45, 
+             resizeMode: 'stretch',
+         }}  />
+        </View>
+     
       </View>
+     
+      <View style={{ flex: 3 }}>
+      
+      </View>
+       <KeyboardAvoidingView behavior='padding' enabled style={{ flex: 18,alignItems:'center',justifyContent: 'flex-start' }}>
+        <Input
+        mask={" [0]  [0]  [0]  [0]  [0]  [0]"}
+            onChangeText={(codeInput) => this.onCodeInputChange(codeInput)}
+            value={this.state.codeInput}
+            unFocus={()=>{if(this.state.codeInput==='')this.setState({codeInputActive: false})}}
+            placeholder='__  __  __  __  __  __'
+            iconName='hash'
+            cStyle={ 
+              
+              this.state.height>this.state.width? this.fPortrait() : this.fLandscape()
+            }
+            iStyle={{}}
+            height={this.state.height}
+            width={this.state.width}
+            keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'phone-pad'}
+            active={this.state.codeInputActive}
+            onFocus={() => this.setState({ codeInputActive: true })}
+            loading={this.state.loading}
+            style={   this.state.height>this.state.width? this.sPortrait() : this.sLandscape()}
+            onLoginSubmit={this.confirmCode.bind(this)}
+            loading={false}
+        /> 
+    
+        <View style={{
+          marginTop: 25,
+          borderColor:'#fff',
+          height: this.state.height>this.state.width ? this.state.height/4 : this.state.height/3,
+          width:this.state.height>this.state.width ? this.state.width*0.9 : this.state.width/2,   
+          backgroundColor:'#fff',
+          borderWidth: 0.4,
+          borderRadius: 7,
+          alignItems:'center'
+        }}>
+          <Text style={[textStyle,{ margin: 12,marginTop:25,fontSize:18,fontFamily: 'AvenirNextCyr-Demi' }]}>
+            Вам было отправлено СМС
+          </Text>
+          <Text style={[textStyle,{marginTop: 18,fontSize: 16}]}>
+            Введите в поле полученный
+          </Text>
+          <Text style={[textStyle,{marginTop: 4,fontSize: 16}]}>
+            код подтверждения
+          </Text>
+        </View>
+        </KeyboardAvoidingView>
+        </View>
+        </Modal>
+   
     </View>
     
    )
@@ -78,14 +246,15 @@ const styles = {
     container:{
       flex: 1,
       backgroundColor:'#e5385d',
-    }
+    },
 };
 
-const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading } = auth;
-  return { email, password, error, loading };
+const mapStateToProps = ({ main }) => {
+  const { user } = main;
+  return { user };
 };
 
 export default connect(mapStateToProps, {
-
+  fetchUserData,
 })(LoginForm);
+

@@ -1,4 +1,5 @@
 export const EMAIL_CHANGED  = 'email_changed'
+<<<<<<< HEAD
 export const PASSWORD_CHANGED = 'password_changed'
 export const LOGIN_USER_SUCCESS = 'login_user_success'
 export const LOGIN_USER_FAIL = 'login_user_fail'
@@ -19,3 +20,6 @@ export const SUBMIT_BLOOD_SUCCESS = 'submit_blood_success'
 
 export const POSITION_CHANGED = 'position_changed'
 export const SELECT_INFO = 'select_info'
+=======
+export const FETCH_USER_DATA = 'fetch_user_data'
+>>>>>>> b358c170bfeae4610ae83add5227265a213546c5
