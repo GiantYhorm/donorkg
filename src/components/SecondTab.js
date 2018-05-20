@@ -14,6 +14,8 @@ import {textStyle} from '../Variables';
 import { Icon} from 'react-native-elements';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const initialLayout = {
   height: 0,
@@ -131,6 +133,14 @@ class SecondTab extends Component {
       )
     }
 
+    renderClipboard(){
+      if(this.state.currentStep === '0')
+      return(
+        <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
+          <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
+        </View>
+      )
+    }
     renderContent(){
       if(typeof this.props.bloodType === 'undefined'){
         return(
@@ -141,9 +151,7 @@ class SecondTab extends Component {
                 {this.renderBackToPreviousStep()}
                 {this.renderCircles()}
               </View>
-              <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
-                <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
-              </View>
+                {this.renderClipboard()}
             </View>
             
             {this.renderSteps()}

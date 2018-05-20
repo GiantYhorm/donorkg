@@ -15,54 +15,18 @@
       },
       "oauth_client": [
         {
+          "client_id": "1009366378628-g5sjf5omt2sef3k984shpph0fd2m3ar5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.donorkg",
+            "certificate_hash": "36b2081d17b84498dd673e54ef86015d4ccee45c"
+          }
+        },
+        {
           "client_id": "1009366378628-93bipei91k1bbaonsbtk59qvn3m6keru.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.donorkg",
-            "certificate_hash": "630955cb16150c0032a5d84d045616ed3554eab2"
-          }
-        },
-        {
-          "client_id": "1009366378628-4e9rdadodanpg23vdil1uelv86p5972m.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBeW8cOh-bd4tQsCibZqJG44KCa6ZlMQK0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1009366378628-4e9rdadodanpg23vdil1uelv86p5972m.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1009366378628:android:ff052950b17c9a6d",
-        "android_client_info": {
-          "package_name": "com.donorkg.android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1009366378628-ugcjjmlg6dt179v4hpeoj16jt9p01eh3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.donorkg.android",
             "certificate_hash": "630955cb16150c0032a5d84d045616ed3554eab2"
           }
         },
