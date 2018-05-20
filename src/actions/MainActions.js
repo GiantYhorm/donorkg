@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux'
 export const fetchUserData = () => {
   return dispatch => {
     const phone = firebase.auth().currentUser.phoneNumber
+    console.log(phone)
     firebase.database().ref(`/users/`).child(`${phone}/`).once('value', snapshot=>{
       let obj = snapshot.val();
       let user = {
