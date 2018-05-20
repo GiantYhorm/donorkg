@@ -1,7 +1,9 @@
 import firebase from 'react-native-firebase'
 import {
    FETCH_USER_DATA,
-} from './types'
+   INITIAL_UPDATE_USER_DATABASE,
+   LOADING
+  } from './types'
 import { Actions } from 'react-native-router-flux'
 
 export const fetchUserData = () => {
@@ -19,9 +21,23 @@ export const fetchUserData = () => {
         currentRole: obj.currentRole,
       }
       
-      dispatch({  FETCH_USER_DATA,payload: user });
+      dispatch({ type: FETCH_USER_DATA, payload: user });
     })
   }
+}
+
+export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,bloodType,rhFactor,currentRole,}) => {
+  
+  return dispatch => {
+    dispatch({ type: LOADING })
+    let phone = firebase.auth().currentUser.phoneNumber
+    firebase.database().ref(`users/${phone}`).update({ firstName, lastName, patronymic,bloodType,rhFactor,currentRole })
+    .then(()=>{
+
+      let user = { firstName, lastName, patronymic,bloodType,rhFactor,currentRole }
+      dispatch({ type: INITIAL_UPDATE_USER_DATABASE,payload : user })
+    
+    })}
 }
 
 export const selectLibrary = (libraryId) => {

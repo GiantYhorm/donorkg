@@ -6,15 +6,17 @@ import {
   TouchableOpacity,
   Dimensions,
   Animated,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from 'react-native';
 import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import {textStyle} from '../Variables';
+import { initialUpdateUserDatabase } from '../actions';
 import { Icon } from 'react-native-elements';
 import Image from 'react-native-image-progress';
-import ProgressBar from 'react-native-progress/Bar';
+import * as Progress from 'react-native-progress';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
@@ -49,7 +51,7 @@ class SecondTab extends Component {
         patronymic: `ыва`,
         bloodType: `0`,
         rhFactor: `0`,
-        currentRole: ``,
+        currentRole: `0`,
 
 
         error: ''
@@ -114,6 +116,7 @@ class SecondTab extends Component {
     }
 
     renderSteps(){
+      const { firstName,lastName,patronymic,currentRole,bloodType,rhFactor} = this.state
       if(this.state.currentStep === '0')
       return(
             <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
@@ -260,6 +263,7 @@ class SecondTab extends Component {
         </View>
         )
       }
+      else if(this.state.currentStep === '4')
       return(
         <View style={{ flex:15, alignItems:'center' }}>
                     <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
@@ -277,9 +281,13 @@ class SecondTab extends Component {
 
         <View style={{flex:7}}>
         <TouchableOpacity onPress={()=>{ 
-              if(this.state.rhFactor!=='0'){
-                this.setState({ currentStep: '5',error: '' })
-              }
+          
+              if(this.state.currentRole!=='0'){
+                
+                  this.props.initialUpdateUserDatabase({firstName,lastName,patronymic,bloodType,rhFactor,currentRole})
+                  this.setState({ currentStep: '5',error: '' })
+                  
+                }
               else {
                 this.setState({ error: 'Выберите хоть одну роль' })
               }
@@ -338,7 +346,14 @@ class SecondTab extends Component {
       )
     }
     renderContent(){
-      if(typeof this.props.bloodType === 'undefined'){
+      if(this.props.loading){
+        return(            
+        <View style={{flex: 1,alignItems:'center',justifyContent:'center'}}>
+<Progress.Circle size={30} color={RED} indeterminate={true} />
+</View>
+        )
+      }
+      if(this.props.user === null){
         return(
           <View style={styles.container}>
   
@@ -506,9 +521,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ main }) => {
-  const { user } = main;
-  return { user };
+  const { user,loading } = main;
+  return { user,loading };
 };
 
 export default connect(mapStateToProps, {
+  initialUpdateUserDatabase
 })(SecondTab);
