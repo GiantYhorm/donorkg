@@ -24,15 +24,10 @@ class RouterComponent extends Component {
     return (
     <Router>
       
-      <Scene key="root" hideNavBar>
-      <Scene key="initial" hideNavBar component ={Initial} />
-      <Scene key="secondTab" hideNavBar component ={SecondTab} />
-      <Scene key="newProfile" hideNavBar={false} title='Профиль' component ={NewProfile} navigationBarStyle={{elevation: 0}} />
-      <Scene key="infoList" hideNavBar={false} title='Info' initial component={InfoList} navigationBarStyle={{elevation: 0}} />
-      <Scene key='editProfile' component={EditProfile} />
-
-      <Scene key="login" component={LoginForm} />
-      
+        <Scene key="root" hideNavBar>
+        <Scene key="secondTab" hideNavBar component ={SecondTab} />
+        <Scene key="newProfile" hideNavBar={false} title='Профиль' component ={NewProfile} navigationBarStyle={{elevation: 0}} />
+        <Scene key="infoList" hideNavBar={false} title='Info' component={InfoList} navigationBarStyle={{elevation: 0}} />
         <Scene key="initial" hideNavBar initial component ={Initial} />      
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />
