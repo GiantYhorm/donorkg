@@ -19,7 +19,7 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       phoneNumberActive: false,
-      phoneNumber: '+996553113555',
+      phoneNumber: '+996555232307',
       loading: false,
       width: '',
       height: '',
@@ -36,12 +36,13 @@ class LoginForm extends Component {
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.setState({isModalVisible: false})
       } else {
       this.setState({
           user: null,
           message: '',
           codeInput: '',
-          phoneNumber: '+996553113555',
+          phoneNumber: '+996555232307',
           confirmResult: null,
         });
       }
@@ -54,22 +55,26 @@ class LoginForm extends Component {
   }
 
   signIn = () => {
+    this.setState({loading : true})
     const { phoneNumber } = this.state;
     firebase.auth().signInWithPhoneNumber(phoneNumber)
-      .then(confirmResult => this.setState({ isModalVisible:true,confirmResult}))
+      .then(confirmResult => this.setState({ isModalVisible:true,confirmResult,loading: false}))
       .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
   };
 
   confirmCode = () => {
+    this.setState({loading: true})
     const { codeInput, confirmResult } = this.state;
-    
-    if (confirmResult && codeInput.length) {
-      confirmResult.confirm(codeInput)
+    let str = codeInput.split(' ').join('')
+    if (confirmResult && str.length) {
+      confirmResult.confirm(str)  
         .then((user) => {
-          console.log(user)
-          this.setState({ isModalVisible:false,message: 'Code Confirmed!' });
+          console.log('success')
+          this.setState({ isModalVisible:false,message: 'Code Confirmed!',loading: false });
         })
-        .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
+        .catch(error => {
+          console.log(error.message)
+          this.setState({ message: `Code Confirm Error: ${error.message}`,loading: false })});
     }
   };
 
@@ -148,7 +153,7 @@ class LoginForm extends Component {
             style={{ textAlign: 'center', }}
             keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'phone-pad'}
             onLoginSubmit={this.signIn.bind(this)}
-            loading={false}
+            loading={this.state.loading}
         />
       </KeyboardAvoidingView>
        
@@ -209,7 +214,6 @@ class LoginForm extends Component {
             loading={this.state.loading}
             style={   this.state.height>this.state.width? this.sPortrait() : this.sLandscape()}
             onLoginSubmit={this.confirmCode.bind(this)}
-            loading={false}
         /> 
     
         <View style={{

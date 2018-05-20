@@ -10,62 +10,16 @@ import {
 } from 'react-native';
 import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-
+import { connect } from 'react-redux';
+import {textStyle} from '../Variables';
+import Icon from 'react-native-vector-icons/Feather';
 
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
 };
 
-const FirstRoute = () =>
-  <View style={styles.inContainer}>
-    <View style={styles.centerArea}>
-      <View style={styles.requestCard}>
-        <View style={styles.userNameArea}>
-          <View style={styles.userName}>
-            <Image
-              style={styles.avatarImage}
-              source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-            />
-            <Text style={styles.nameText}>Name Surname </Text>
-          </View>
-          <Text style={styles.helpText}>
-            хочет помочь вам
-          </Text>
-        </View>
-        <View style={styles.rejectAcceptArea}>
-          <TouchableOpacity>
-            <Text style={styles.rejectText}>Отказаться</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.acceptText}>Принять</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.requestCard}>
-        <View style={styles.userNameArea}>
-          <View style={styles.userName}>
-            <Image
-              style={styles.avatarImage}
-              source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-            />
-            <Text style={styles.nameText}>Name Surname </Text>
-          </View>
-          <Text style={styles.helpText}>
-            хочет помочь вам
-          </Text>
-        </View>
-        <View style={styles.rejectAcceptArea}>
-          <TouchableOpacity>
-            <Text style={styles.rejectText}>Отказаться</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.acceptText}>Принять</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  </View>;
+const FirstRoute = () =><View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
 const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
 const ThirdRoute = () => <View style={[ styles.container, { backgroundColor: 'cyan' } ]} />;
 
@@ -75,9 +29,9 @@ class SecondTab extends Component {
     state = {
       index: 0,
       routes: [
-        { key: 'first', title: 'В ОЖИДАНИИ' },
-        { key: 'second', title: 'РАССМОТРЕННЫЕ' },
-        { key: 'third', title: 'ДОНОРЫ' },
+        { key: 'first', title: 'В ожидании' },
+        { key: 'second', title: 'Просмотренные' },
+        { key: 'third', title: 'Доноры' },
       ],
     };
 
@@ -105,7 +59,7 @@ class SecondTab extends Component {
       indicatorStyle={styles.indicator}
       style={styles.header}
       renderLabel={this._renderLabel(props)}
-    />;
+    />
 
     _renderScene = SceneMap({
       first: FirstRoute,
@@ -113,9 +67,37 @@ class SecondTab extends Component {
       third: ThirdRoute
     });
 
-  render() {
-    return (
+    renderContent(){
+      console.log(this.props.bloodType)
+      if(typeof this.props.bloodType === 'undefined'){
+        return(
+          <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+          <View style ={{marginBottom : 50,justifyContent:'center',alignItems:'center'}}>
+          <Icon name='phone' color='#D0D0D0' size={200} />
+              <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a',}]}>Welcome!</Text>
+              <Text style={[textStyle,{marginTop: 30,color:'#9C9495',}]}>You haven't filled out our questionnaire yet.</Text>
+              <TouchableOpacity
+style={{
+width: 170,
+alignSelf:'center',
+borderRadius: 15,
+borderWidth: 0.6,
+borderColor: '#F65352',
+backgroundColor: '#F65352',
+height: 40,
+marginTop: 85,
+alignItems: 'center',
+justifyContent: 'center'
+}}>
+  <Text style={[textStyle,{fontSize:20,color : '#fff',}]}>Join Us!</Text>
+</TouchableOpacity>
+              </View>
+              </View>
+  )  
+      }
+      return(
       <View style={styles.container}>
+
         <TabViewAnimated
           navigationState={this.state}
           renderScene={this._renderScene}
@@ -128,6 +110,11 @@ class SecondTab extends Component {
           <Text style={styles.requestCloseText}>Я больше не нуждаюсь в крови</Text>
         </TouchableOpacity>
       </View>
+      )
+    }
+  render() {
+    return (
+      this.renderContent()
     );
   }
 }
@@ -164,7 +151,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 5,
     paddingHorizontal: 20,
-    bottom: 10
+    bottom: 20
   },
   requestCloseText: {
     color: '#fff',
@@ -227,4 +214,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SecondTab;
+const mapStateToProps = ({ main }) => {
+  const { user } = main;
+  return { user };
+};
+
+export default connect(mapStateToProps, {
+})(SecondTab);

@@ -5,13 +5,16 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import { fetchUserData } from '../actions'
 
-class Initial extends Component {
+async function fetchData(userDataFetching){
+  await userDataFetching()
+}
+
+ class Initial extends Component {
 
   componentDidMount(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.props.fetchUserData();
-        Actions.tabView();
+        fetchData(fetchUserData).then(()=>Actions.main());
       } else {
         Actions.login();
       }
