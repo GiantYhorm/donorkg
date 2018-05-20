@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
+  
   Dimensions,
   Animated
 } from 'react-native';
@@ -12,7 +12,9 @@ import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import {textStyle} from '../Variables';
-import Icon from 'react-native-vector-icons/Feather';
+import { Icon} from 'react-native-elements';
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 
 const initialLayout = {
   height: 0,
@@ -23,17 +25,25 @@ const FirstRoute = () =><View style={[ styles.container, { backgroundColor: '#67
 const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
 const ThirdRoute = () => <View style={[ styles.container, { backgroundColor: 'cyan' } ]} />;
 
+const logoUri = require('../assets/logo.png');
 
 class SecondTab extends Component {
 
-    state = {
-      index: 0,
-      routes: [
-        { key: 'first', title: 'В ожидании' },
-        { key: 'second', title: 'Просмотренные' },
-        { key: 'third', title: 'Доноры' },
-      ],
-    };
+    constructor(props){
+      super(props)
+      this.state = {
+        index: 0,
+        width: '',
+        height: '',
+        routes: [
+          { key: 'first', title: 'В ожидании' },
+          { key: 'second', title: 'Просмотренные' },
+          { key: 'third', title: 'Доноры' },
+        ],
+        currentStep: '0',
+      }
+    }
+
 
     _handleIndexChange = index => this.setState({ index });
 
@@ -67,36 +77,57 @@ class SecondTab extends Component {
       third: ThirdRoute
     });
 
+    getCircleColor(step,circleNumber){
+      if(step===circleNumber)
+        return RED
+      return '#D0D0D0'
+    }
+
+    getCircleMargin(circleNumber){
+      if(circleNumber==='0')
+        return 10
+      else if(circleNumber==='2')
+        return -10
+    }
+
+    renderCircles(){
+      return(
+        <View style={{flex : 1, flexDirection:'row',justifyContent: 'center', alignItems: 'center' }}>
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'0'), marginRight: this.getCircleMargin('0') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'1'), marginRight: this.getCircleMargin('1') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'2'), marginRight: this.getCircleMargin('2') }]} />
+        </View>
+      )
+    }
+
     renderContent(){
-      console.log(this.props.bloodType)
       if(typeof this.props.bloodType === 'undefined'){
         return(
-          <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-          <View style ={{marginBottom : 50,justifyContent:'center',alignItems:'center'}}>
-          <Icon name='phone' color='#D0D0D0' size={200} />
-              <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a',}]}>Welcome!</Text>
-              <Text style={[textStyle,{marginTop: 30,color:'#9C9495',}]}>You haven't filled out our questionnaire yet.</Text>
-              <TouchableOpacity
-style={{
-width: 170,
-alignSelf:'center',
-borderRadius: 15,
-borderWidth: 0.6,
-borderColor: '#F65352',
-backgroundColor: '#F65352',
-height: 40,
-marginTop: 85,
-alignItems: 'center',
-justifyContent: 'center'
-}}>
-  <Text style={[textStyle,{fontSize:20,color : '#fff',}]}>Join Us!</Text>
-</TouchableOpacity>
+          <View style={styles.container}>
+  
+            <View style={{ flex:12, }}>
+              <View style={{flex: 1}}>
+                {this.renderCircles()}
               </View>
+              <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
+                <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
               </View>
+            </View>
+            
+            <View style={{ flex:10 , justifyContent:'center' , alignItems:'center' }}>
+              
+              <Text style={[textStyle,{fontSize : 32,color:'#4a4a4a'}]}>Welcome!</Text>
+              <Text style={[textStyle,{marginTop: 30,color:'#9C9495'}]}>You haven't filled out our questionnaire yet.</Text>
+              <TouchableOpacity style={styles.joinButton}>
+                <Text style={[textStyle,{fontSize:20,color : '#fff'}]}>Join Us!</Text>
+              </TouchableOpacity>
+   
+            </View>
+          </View>
   )  
       }
       return(
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={(e)=>{this.setState({height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width})}}>
 
         <TabViewAnimated
           navigationState={this.state}
@@ -137,6 +168,27 @@ const styles = StyleSheet.create({
     color: RED,
     fontSize: 13,
     paddingVertical: 10
+  },
+  circle: {
+    width: 15,
+    height: 15,
+    borderRadius: 15/2,
+  },
+  joinButton: {
+    width: 170,
+    borderRadius: 15,
+    borderWidth: 0.6,
+    borderColor: '#F65352',
+    backgroundColor: RED,
+    height: 40,
+    marginTop: 65,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  clipboardStyle: {
+    color: "#D0D0D0",
+    height:200,
+    width:200
   },
   centerArea: {
     flex: 15,
