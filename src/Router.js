@@ -12,7 +12,7 @@ import SecondTab from './components/SecondTab';
 import NewProfile from './components/NewProfile';
 import InfoList from './components/InfoList';
 import Main from './components/Main';
-
+import Screen from './components/introduction/Screen';
 
 class RouterComponent extends Component {
 
@@ -28,11 +28,12 @@ class RouterComponent extends Component {
         <Scene key="secondTab" hideNavBar component ={SecondTab} />
         <Scene key="newProfile" hideNavBar={false} title='Профиль' component ={NewProfile} navigationBarStyle={{elevation: 0}} />
         <Scene key="infoList" hideNavBar={false} title='Info' component={InfoList} navigationBarStyle={{elevation: 0}} />
-        <Scene key="initial" hideNavBar initial component ={Initial} />      
+        <Scene key="initial" hideNavBar initial component ={Initial} />
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />
-      
-      </Scene>
+        <Scene key="screen" hideNavBar component ={Screen} />
+
+        </Scene>
     
     </Router>
     )
