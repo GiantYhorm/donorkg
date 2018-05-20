@@ -18,3 +18,4 @@ export const SUBMIT_BLOOD = 'submit_blood'
 export const SUBMIT_BLOOD_SUCCESS = 'submit_blood_success'
 
 export const POSITION_CHANGED = 'position_changed'
+export const SELECT_INFO = 'select_info'

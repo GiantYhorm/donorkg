@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import firebase from 'firebase'
 import {
     USER_FETCH,
@@ -5,7 +6,8 @@ import {
     USER_FILLING,
     USER_FILLING_FORM,
     SUBMIT_BLOOD,
-    SUBMIT_BLOOD_SUCCESS
+    SUBMIT_BLOOD_SUCCESS,
+    SELECT_INFO
 } from './types'
 import { Actions } from 'react-native-router-flux'
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -149,3 +151,12 @@ export const sumbitBlood = ({s,d,imagePath}) => {
             }
 
 }
+
+export const selectLibrary = (libraryId) => {
+  return {
+    type: 'select_library',
+    payload: libraryId
+  };
+};
+
+
