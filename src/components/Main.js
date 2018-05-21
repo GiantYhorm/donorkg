@@ -12,6 +12,7 @@ import Modal from "react-native-modal";
 import {  } from '../actions'
 import Icon from 'react-native-vector-icons/Feather';
 import SecondTab from './SecondTab';
+import Profile from './Profile';
 
 class Main extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Main extends Component {
     this.state = {
       indexTab: '1',
     }
-  
+
   }
 
   getIconColor(indexTab){
@@ -28,17 +29,17 @@ class Main extends Component {
       return RED
     else return 'gray'
   }
-  
+
   renderContent(){
     switch(this.state.indexTab){
       case '0':
       return (<SecondTab />)
       case '2':
-      return (<SecondTab />)
-      default: 
+      return (<Profile />)
+      default:
       return (<SecondTab />)
     }
-    
+
   }
 
   render() {
@@ -54,21 +55,21 @@ class Main extends Component {
             <Icon name='phone' style={{ color: this.getIconColor('0')}} size={21} />
           </TouchableWithoutFeedback>
         </View>
-        
+
         <View style={[styles.tab]}>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '1' })} style={styles.tabButton}>
             <Icon name='phone' style={{ color: this.getIconColor('1')}} size={21} />
           </TouchableWithoutFeedback>
         </View>
-        
+
         <View style={styles.tab}>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '2' })} style={styles.tabButton}>
-            <Icon name='phone' style={{ color: this.getIconColor('2')}} size={21} />
+            <Icon name='user' style={{ color: this.getIconColor('2')}} size={21} />
           </TouchableWithoutFeedback>
         </View>
       </View>
     </View>
-    
+
    )
   }
 }
@@ -82,9 +83,9 @@ const styles = {
       height: 45,
       width:45,
       alignItems: 'center',
-      justifyContent: 'center', 
+      justifyContent: 'center',
       backgroundColor:'green'
-    
+
     },
     tab:{
       flex: 1,
@@ -99,5 +100,5 @@ const mapStateToProps = ({ main }) => {
 };
 
 export default connect(mapStateToProps, {
-  
+
 })(Main);

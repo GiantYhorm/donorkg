@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  
   Dimensions,
   Animated
 } from 'react-native';
@@ -15,6 +14,8 @@ import {textStyle} from '../Variables';
 import { Icon} from 'react-native-elements';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const initialLayout = {
   height: 0,
@@ -121,18 +122,36 @@ class SecondTab extends Component {
       )
     }
 
+    renderBackToPreviousStep(){
+      if(this.state.currentStep!=='0')
+      return(
+        <View style={{ position: 'absolute',width: 30, marginTop: 17,marginLeft: 5}}>
+          <TouchableOpacity onPress={()=>{ this.setState({ currentStep: `${Number(this.state.currentStep)-1}` }) }} >
+            <Icon type='ionicon' name='ios-arrow-back-outline' color={RED} size={27} />    
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
+    renderClipboard(){
+      if(this.state.currentStep === '0')
+      return(
+        <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
+          <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
+        </View>
+      )
+    }
     renderContent(){
       if(typeof this.props.bloodType === 'undefined'){
         return(
           <View style={styles.container}>
   
             <View style={{ flex:12, }}>
-              <View style={{height:70}}>
+              <View style={{ height:70,flexDirection:'row', }}>
+                {this.renderBackToPreviousStep()}
                 {this.renderCircles()}
               </View>
-              <View style={{ justifyContent: 'flex-end', alignItems: 'center'  }}>
-                <Icon type='ionicon' name='ios-clipboard-outline' color='#D0D0D0' size={200} />
-              </View>
+                {this.renderClipboard()}
             </View>
             
             {this.renderSteps()}
