@@ -394,7 +394,6 @@ class SecondTab extends Component {
       )
     }
   render() {
-    console.log(this.props.user)
     return (
       <View style={styles.container} onLayout={(e)=>{this.setState({ height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width })}}>
         {this.renderContent()} 

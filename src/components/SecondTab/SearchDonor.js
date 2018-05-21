@@ -19,7 +19,7 @@ class SearchDonor extends Component {
   }
 
   componentWillMount(){
-    this.props.fetchAppropriateData()
+    this.props.fetchAppropriateData(this.props.user.bloodType,this.props.user.rhFactor,this.props.user.currentRole)
   }
 
   makeRemoteRequest = () =>{
