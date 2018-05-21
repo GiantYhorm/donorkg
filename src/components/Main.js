@@ -20,7 +20,9 @@ class Main extends Component {
     this.state = {
       indexTab: '1',
     }
-  
+    
+
+    
   }
 
   getIconColor(indexTab){
@@ -51,19 +53,19 @@ class Main extends Component {
       <View style={{ flex: 1,borderTopWidth: 0.2,flexDirection: 'row' }}>
         <View style={[styles.tab,{}]}>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '0' })} style={styles.tabButton}>
-            <Icon name='phone' style={{ color: this.getIconColor('0')}} size={21} />
+            <Icon name='book' style={{ color: this.getIconColor('0')}} size={23} />
           </TouchableWithoutFeedback>
         </View>
         
         <View style={[styles.tab]}>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '1' })} style={styles.tabButton}>
-            <Icon name='phone' style={{ color: this.getIconColor('1')}} size={21} />
+            <Icon name='activity' style={{ color: this.getIconColor('1')}} size={25} />
           </TouchableWithoutFeedback>
         </View>
         
         <View style={styles.tab}>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '2' })} style={styles.tabButton}>
-            <Icon name='phone' style={{ color: this.getIconColor('2')}} size={21} />
+            <Icon name='settings' style={{ color: this.getIconColor('2')}} size={25} />
           </TouchableWithoutFeedback>
         </View>
       </View>

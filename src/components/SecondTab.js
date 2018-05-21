@@ -12,7 +12,8 @@ import {
 import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
-import {textStyle} from '../Variables';
+import { textStyle} from '../Variables';
+import SearchDonor from './SecondTab/SearchDonor'
 import { initialUpdateUserDatabase } from '../actions';
 import { Icon } from 'react-native-elements';
 import Image from 'react-native-image-progress';
@@ -25,10 +26,21 @@ const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-const FirstRoute = () =><View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
-const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
-const ThirdRoute = () => <View style={[ styles.container, { backgroundColor: 'cyan' } ]} />;
+class FirstRoute extends Component{
+  render(){
+    return(
+      <View style={[ styles.container, { backgroundColor: '#fff' } ]} />
+    )
+  }
+}
 
+class SecondRoute extends Component{
+  render(){
+    return(
+      <View style={[ styles.container, { backgroundColor: '#fff' } ]} />
+    )
+  }
+}
 const logoUri = require('../assets/logo.png');
 
 class SecondTab extends Component {
@@ -36,13 +48,13 @@ class SecondTab extends Component {
     constructor(props){
       super(props)
       this.state = {
-        index: 0,
+        index: 2,
         width: '',
         height: '',
         routes: [
-          { key: 'first', title: 'В ожидании' },
-          { key: 'second', title: 'Просмотренные' },
-          { key: 'third', title: 'Доноры' },
+          { key: 'first', title: 'Просмотренные' },
+          { key: 'second', title: 'В ожидании' },
+          { key: 'third', title: 'Поиск' },
         ],
         currentStep: '0',
 
@@ -88,16 +100,11 @@ class SecondTab extends Component {
     _renderScene = SceneMap({
       first: FirstRoute,
       second: SecondRoute,
-      third: ThirdRoute
+      third: SearchDonor
     });
 
-    getCircleColor(step,circleNumber){
+    getColor(step,circleNumber){
       if(step===circleNumber)
-        return RED
-      return '#D0D0D0'
-    }
-    getBloodTypeColor(selected,buttonNumber){
-      if(selected===buttonNumber)
         return RED
       return '#D0D0D0'
     }
@@ -106,11 +113,11 @@ class SecondTab extends Component {
     renderCircles(){
       return(
         <View style={{flex : 1, flexDirection:'row',justifyContent: 'center', alignItems: 'center' }}>
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'0') }]} />
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'1') }]} />
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'2') }]} /> 
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'3') }]} />
-          <View style={[styles.circle,{ backgroundColor: this.getCircleColor(this.state.currentStep,'4') }]} /> 
+          <View style={[styles.circle,{ backgroundColor: this.getColor(this.state.currentStep,'0') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getColor(this.state.currentStep,'1') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getColor(this.state.currentStep,'2') }]} /> 
+          <View style={[styles.circle,{ backgroundColor: this.getColor(this.state.currentStep,'3') }]} />
+          <View style={[styles.circle,{ backgroundColor: this.getColor(this.state.currentStep,'4') }]} /> 
         </View>
       )
     }
@@ -190,23 +197,23 @@ class SecondTab extends Component {
           <View style={{ flex:15, alignItems:'center' }}>
             <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
           <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'O' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-            <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'O')} size={47} /> 
-            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'O'),fontSize:22}]}>O</Text>   
+            <Icon type='feather' name='droplet' color={this.getColor(this.state.bloodType,'O')} size={47} /> 
+            <Text style={[textStyle,{color: this.getColor(this.state.bloodType,'O'),fontSize:22}]}>O</Text>   
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'A' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'A')} size={47} /> 
-            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'A'),fontSize:22}]}>A</Text>   
+          <Icon type='feather' name='droplet' color={this.getColor(this.state.bloodType,'A')} size={47} /> 
+            <Text style={[textStyle,{color: this.getColor(this.state.bloodType,'A'),fontSize:22}]}>A</Text>   
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'B' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'B')} size={47} /> 
-            <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.bloodType,'B'),fontSize:22}]}>B</Text>   
+          <Icon type='feather' name='droplet' color={this.getColor(this.state.bloodType,'B')} size={47} /> 
+            <Text style={[textStyle,{color:this.getColor(this.state.bloodType,'B'),fontSize:22}]}>B</Text>   
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>{ this.setState({ bloodType: 'AB' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-          <Icon type='feather' name='droplet' color={this.getBloodTypeColor(this.state.bloodType,'AB')} size={47} /> 
-            <Text style={[textStyle,{color: this.getBloodTypeColor(this.state.bloodType,'AB'),fontSize:22}]}>AB</Text>   
+          <Icon type='feather' name='droplet' color={this.getColor(this.state.bloodType,'AB')} size={47} /> 
+            <Text style={[textStyle,{color: this.getColor(this.state.bloodType,'AB'),fontSize:22}]}>AB</Text>   
           </TouchableOpacity>
           </View>
 
@@ -233,11 +240,11 @@ class SecondTab extends Component {
           <View style={{ flex:15, alignItems:'center' }}>
                       <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
                       <TouchableOpacity onPress={()=>{ this.setState({ rhFactor: '+' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-                      <Icon type='feather' name='plus' color={this.getBloodTypeColor(this.state.rhFactor,'+')} size={47} /> 
+                      <Icon type='feather' name='plus' color={this.getColor(this.state.rhFactor,'+')} size={47} /> 
                       </TouchableOpacity>
                       <TouchableOpacity onPress={()=>{ this.setState({ rhFactor: '-' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
 
-                      <Icon type='feather' name='minus' color={this.getBloodTypeColor(this.state.rhFactor,'-')} size={47} /> 
+                      <Icon type='feather' name='minus' color={this.getColor(this.state.rhFactor,'-')} size={47} /> 
                       </TouchableOpacity>
           
           </View>
@@ -268,10 +275,10 @@ class SecondTab extends Component {
         <View style={{ flex:15, alignItems:'center' }}>
                     <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
                     <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'donor' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-                      <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.currentRole,'donor')}]}>Донор</Text>
+                      <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'donor')}]}>Донор</Text>
                      </TouchableOpacity>
                      <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'recipient' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-                     <Text style={[textStyle,{color:this.getBloodTypeColor(this.state.currentRole,'recipient')}]}>Реципиент</Text>
+                     <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'recipient')}]}>Реципиент</Text>
                     </TouchableOpacity>
         </View>
 
@@ -349,7 +356,7 @@ class SecondTab extends Component {
       if(this.props.loading){
         return(            
         <View style={{flex: 1,alignItems:'center',justifyContent:'center'}}>
-<Progress.Circle size={30} color={RED} indeterminate={true} />
+<Progress.Circle size={40} color={RED} indeterminate={true} />
 </View>
         )
       }
@@ -381,13 +388,11 @@ class SecondTab extends Component {
           initialLayout={initialLayout}
         />
 
-        <TouchableOpacity style={styles.requestClose}>
-          <Text style={styles.requestCloseText}>Я больше не нуждаюсь в крови</Text>
-        </TouchableOpacity>
       </View>
       )
     }
   render() {
+    console.log(this.props.user)
     return (
       <View style={styles.container} onLayout={(e)=>{this.setState({ height: e.nativeEvent.layout.height,width:e.nativeEvent.layout.width })}}>
         {this.renderContent()} 
