@@ -14,7 +14,7 @@ async function fetchData(userDataFetching){
   componentDidMount(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        fetchData(fetchUserData).then(()=>Actions.main());
+        fetchData(this.props.fetchUserData).then(()=>Actions.main());
       } else {
         Actions.login();
       }
