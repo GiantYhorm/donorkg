@@ -36,58 +36,64 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
   return dispatch => {
     dispatch({type: LOADING})
     let phone = firebase.auth().currentUser.phoneNumber
-    let list = null
+    let list = []
+    let obj = {}
     
-    firebase.database().ref(`users/`).once('value', snapshot => {
-     snapshot.forEach(childSnapshot => {  
-       if(currentRole==='donor'){
-       if(bloodType === 'O'){
-        list.push(childSnapshot.val())
-       }
-       else if(bloodType === 'A'){
-          if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='AB'){
-              list.push(childSnapshot.val())        
+    firebase.database().ref(`users/`).on('value', snapshot => {
+     snapshot.forEach(childSnapshot => {
+      obj = childSnapshot.val()
+      obj.phone=childSnapshot.key
+
+      if(phone!==obj.phone&&rhFactor===obj.rhFactor){
+        
+        if(currentRole==='donor'){
+          if(bloodType === 'O'){
+            list.push(obj)
+            
           }
-       }
-       else if(bloodType === 'B'){
-          if(childSnapshot.val().bloodType==='AB'||childSnapshot.val().bloodType==='B'){
-              list.push(childSnapshot)
+          else if(bloodType === 'A'){
+            if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='AB'){
+              list.push(obj)        
+            }
           }
-       }
-       else{
+          else if(bloodType === 'B'){
+            if(childSnapshot.val().bloodType==='AB'||childSnapshot.val().bloodType==='B'){
+              list.push(obj)
+            }
+          }
+          else{
             if(bloodType==='AB'&&bloodType===childSnapshot.val().bloodType){
-              list.push(childSnapshot)
-                    
+              list.push(obj)          
            }
        }
       }
       else if(currentRole==='recipient'){
         if(bloodType === 'O'&&bloodType===childSnapshot.val().bloodType){
-          list.push(childSnapshot.val())
+          list.push(obj)
          }
          else if(bloodType === 'A'){
             if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='O'){
-                list.push(childSnapshot.val())        
+                list.push(obj)        
             }
          }
          else if(bloodType === 'B'){
             if(childSnapshot.val().bloodType==='O'||childSnapshot.val().bloodType==='B'){
-                list.push(childSnapshot)
+                list.push(obj)
             }
          }
          else{
               if(bloodType==='AB'){
-                list.push(childSnapshot)
+                list.push(obj)
                       
              }
          }
       }
-      console.log('2',list)
-    })
-    console.log('3',list)
-  })
-    console.log('1',list)
-    dispatch({type: FETCH_APPOPRIATE_BLOOD, payload: list})
+    }
+  }) 
+})
+  console.log(list)
+  dispatch({type: FETCH_APPOPRIATE_BLOOD, payload: list})  
+
   }
 }
 

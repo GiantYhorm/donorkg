@@ -260,4 +260,3 @@ const mapStateToProps = ({ main }) => {
 export default connect(mapStateToProps, {
   fetchUserData,
 })(LoginForm);
-

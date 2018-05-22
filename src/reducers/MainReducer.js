@@ -7,6 +7,7 @@ import {
 
 const INITIAL_STATE = {
   user: null,
+  list: null,
   loading : false
 }
 
