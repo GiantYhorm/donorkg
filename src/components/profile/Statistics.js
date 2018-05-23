@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
-import { textStyle } from '../../Variables';
+import { textStyle, RED } from '../../Variables';
 
 const Statistics = (props) => {
   const renderBlood = () => {
@@ -12,17 +12,17 @@ const Statistics = (props) => {
       return (
         <View style={styles.block}>
           <Text style={styles.number}>{props.bloodType}</Text>
-          <Text style={styles.label}>группа крови</Text>
+          <Text style={styles.label}>Группа крови</Text>
         </View>
       );
     }
   };
 
-  const renderRecieves = () => {
-    if (props.recieved) {
+  const renderReceives = () => {
+    if (props.received) {
       return (
         <View style={styles.block}>
-          <Text style={styles.number}>{props.recieved}</Text>
+          <Text style={styles.number}>{props.received}</Text>
           <Text style={styles.label}>Получено</Text>
         </View>
       );
@@ -34,7 +34,7 @@ const Statistics = (props) => {
       return (
         <View style={styles.block}>
           <Text style={styles.number}>{props.donated}</Text>
-          <Text style={styles.label}>отдано</Text>
+          <Text style={styles.label}>Отдано</Text>
         </View>
       );
     }
@@ -44,7 +44,7 @@ const Statistics = (props) => {
     <View style={[styles.container, props.style]}>
       {renderBlood()}
       {renderDonations()}
-      {renderRecieves()}
+      {renderReceives()}
     </View>
   );
 };
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
   number: {
     ...textStyle,
     fontSize: 18,
-    color: '#fff',
+    color: '#707070',
     fontWeight: '600',
   },
   label: {
     ...textStyle,
     fontSize: 12,
-    color: '#fff',
+    color: '#707070',
   }
 });
 

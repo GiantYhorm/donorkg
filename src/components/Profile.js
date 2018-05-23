@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {
   Statistics,
+  BackgroundImage,
   MenuItem
 } from './profile';
 import { RED, SCREEN_WIDTH, textStyle } from '../Variables';
@@ -19,17 +20,13 @@ class Profile extends Component {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.user}>
-          <View style={styles.userInfo}>
-            <Image source={avatar} style={styles.image} resizeMode='cover' />
-            <Text style={styles.username}>Sultan Ernisov</Text>
-            <Text style={styles.phone}>+996555232307</Text>
-          </View>
-            <Statistics
-              recieved={23}
-              donated={149}
-              bloodType='A+'
-            />
+          <BackgroundImage source={avatar} />
         </View>
+        <Statistics
+          received={12}
+          donated={234}
+          bloodType='A+'
+        />
         <View style={styles.menu}>
           <MenuItem iconName='edit-2' iconSize={18}>Редактировать профиль</MenuItem>
           <MenuItem iconName='clock' iconSize={18}>История</MenuItem>
@@ -55,7 +52,6 @@ const styles = StyleSheet.create({
   },
   user: {
     flex: 1,
-    backgroundColor: RED,
   },
   userInfo: {
     flex: 1,

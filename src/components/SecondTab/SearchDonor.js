@@ -7,7 +7,7 @@ import Image from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import {textStyle,RED} from '../../Variables';
 import Icon from 'react-native-vector-icons/Feather';
-import { fetchAppropriateData } from '../../actions';
+import { fetchAppropriateData,fetchUserData } from '../../actions';
 import {List, ListItem, SearchBar} from 'react-native-elements';
 
 class SearchDonor extends Component {
@@ -16,10 +16,9 @@ class SearchDonor extends Component {
     this.state = {
       height: '',
       width: '',
-
       loading:false,
       list: [],
-      refreshing: true,
+      refreshing: false,
     }
   }
 
@@ -91,8 +90,8 @@ class SearchDonor extends Component {
 
   handleRefresh=()=>{
   
-    this.setState({ refreshing:true })
-      this.makeRemoteRequest();
+    this.setState({ list:[],refreshing:true })
+    this.makeRemoteRequest();
   
   }
 
@@ -102,14 +101,19 @@ class SearchDonor extends Component {
     )
   }
   renderHeader=()=>{
-    return <SearchBar  placeholder="Type here..." lightTheme round />
+    return <SearchBar onChangeText={(text)=>{this.onSearchChangeText(text)}} placeholder="Поиск..." lightTheme round />
   }
-
+  onSearchChangeText(text){
+    
+    let sorted = this.state.list.filter(function(item){
+      return `${item.firstName} ${item.lastName}`.indexOf(text)>=0
+    })
+    
+    this.setState({list: sorted})
+  }
   renderFooter=()=>{
     if(!this.state.loading) return null
-    return <View style={{paddingVertical:20,borderTopWidth:1 ,borderTopColor:'#CED0CE'}}>
-    <Progress.Circle size={40} color={RED} indeterminate={true} />
-</View>
+    return null
   }
 
   render() {
@@ -120,14 +124,14 @@ class SearchDonor extends Component {
           renderItem={({item})=>(
             <ListItem
               roundAvatar
+              onPress={()=>{ Actions.profileView({ profile: item}) }}
               title={`${item.firstName} ${item.lastName}`}
               containerStyle={{borderBottomWidth:0}}
               titleStyle={[textStyle,]}
               subtitleStyle={[textStyle,{color:'#CED0CE'}]}
               subtitle={`${item.phone}`}
-              avatar={{uri: 'https://griffonagedotcom.files.wordpress.com/2016/07/profile-modern-2e.jpg'}}
-          />
-            
+              avatar={{uri: item.avatar}}
+          />         
    )}
           keyExtractor={item => item.firstName}
           refreshing={this.state.refreshing}
@@ -166,6 +170,6 @@ const mapStateToProps = ({ main }) => {
 };
 
 export default connect(mapStateToProps, {
-  fetchAppropriateData,
+  fetchAppropriateData,fetchUserData,
 })(SearchDonor);
 

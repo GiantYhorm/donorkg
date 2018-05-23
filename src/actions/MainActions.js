@@ -25,8 +25,12 @@ export const fetchUserData = () => {
            rhFactor: snapshot.val().rhFactor,
            phone,
            currentRole: snapshot.val().currentRole,
-      
+           receivedCount: snapshot.val().receivedCount,
+           donatedCount: snapshot.val().donatedCount,
+           avatar: snapshot.val().avatar
+
         }}
+        
         dispatch({ type: FETCH_USER_DATA, payload: user })
     })
   }

@@ -13,10 +13,11 @@ const BackgroundImage = (props) => {
   return (
     <View style={[styles.container, props.style]}>
       <Image
-        source={props.source}
+        source={{uri: props.source}}
         style={styles.image}
         resizeMode='cover'
-      />
+      >
+      </Image>
       <View style={styles.contentWrapper}>
         {props.children}
       </View>
@@ -27,6 +28,7 @@ const BackgroundImage = (props) => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
+    flex: 1,
   },
   contentWrapper: {
     flex: 1,

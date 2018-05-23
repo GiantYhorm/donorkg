@@ -35,7 +35,7 @@ const MenuItem = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 13,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...textStyle,
-    fontSize: 18,
+    fontSize: 16,
   },
 });
 
