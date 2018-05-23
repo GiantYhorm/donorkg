@@ -10,9 +10,7 @@ import { textStyle } from '../../Variables';
 
 const MenuItem = (props) => {
   const renderIcon = (icon) => {
-    console.log(icon)
     if (icon) {
-      console.log('sdfs')
       return (
         <Icon
           name={icon}

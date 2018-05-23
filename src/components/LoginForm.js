@@ -70,11 +70,9 @@ class LoginForm extends Component {
     if (confirmResult && str.length) {
       confirmResult.confirm(str)  
         .then((user) => {
-          console.log('success')
           this.setState({ isModalVisible:false,message: 'Code Confirmed!',loading: false });
         })
         .catch(error => {
-          console.log(error.message)
           this.setState({ message: `Code Confirm Error: ${error.message}`,loading: false })});
     }
   };
@@ -262,4 +260,3 @@ const mapStateToProps = ({ main }) => {
 export default connect(mapStateToProps, {
   fetchUserData,
 })(LoginForm);
-

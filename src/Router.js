@@ -9,9 +9,11 @@ import { textStyle } from './Variables'
 
 import LoginForm from './components/LoginForm';
 import SecondTab from './components/SecondTab';
+
+import ProfileEdit from './components/ProfileEdit';
 import InfoList from './components/InfoList';
 import Main from './components/Main';
-
+import Screen from './components/introduction/Screen';
 
 class RouterComponent extends Component {
 
@@ -23,6 +25,7 @@ class RouterComponent extends Component {
     return (
     <Router>
 
+
         <Scene key="root" hideNavBar>
         <Scene key="secondTab" hideNavBar component ={SecondTab} />
         <Scene key="infoList" hideNavBar={false} title='Info' component={InfoList} navigationBarStyle={{elevation: 0}} />
@@ -30,7 +33,10 @@ class RouterComponent extends Component {
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />
 
-      </Scene>
+        <Scene key='profileEdit' initial component={ProfileEdit} />
+        <Scene key="screen" hideNavBar component ={Screen} />
+
+        </Scene>
 
     </Router>
     )
