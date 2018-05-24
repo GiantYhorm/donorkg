@@ -114,10 +114,3 @@ export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,blood
     
     })}
 }
-
-export const selectLibrary = (libraryId) => {
-  return {
-    type: 'select_library',
-    payload: libraryId
-  }
-}
