@@ -8,3 +8,8 @@ export const textStyle={
   color: 'black',
   fontFamily: 'AvenirNextCyr-Regular'
 }
+
+export const boldTextStyle = {
+  color: 'black',
+  fontFamily: 'AvenirNextCyr-Demi'
+};
