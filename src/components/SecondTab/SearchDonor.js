@@ -35,9 +35,9 @@ class SearchDonor extends Component {
     firebase.database().ref(`users/`).on('value', snapshot => {
     snapshot.forEach(childSnapshot => {
      obj = childSnapshot.val()
-     obj.phone=childSnapshot.key
+     obj.phoneNumber=childSnapshot.key
 
-     if(phone!==obj.phone&&rhFactor===obj.rhFactor){
+     if(phone!==obj.phoneNumber&&rhFactor===obj.rhFactor){
        
        if(currentRole==='donor'){
          if(bloodType === 'O'){
@@ -129,7 +129,7 @@ class SearchDonor extends Component {
               containerStyle={{borderBottomWidth:0}}
               titleStyle={[textStyle,]}
               subtitleStyle={[textStyle,{color:'#CED0CE'}]}
-              subtitle={`${item.phone}`}
+              subtitle={`${item.phoneNumber}`}
               avatar={{uri: item.avatar}}
           />         
    )}
