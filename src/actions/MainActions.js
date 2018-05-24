@@ -25,9 +25,12 @@ export const fetchUserData = () => {
            rhFactor: snapshot.val().rhFactor,
            phone,
            currentRole: snapshot.val().currentRole,
-           recievedCount: snapshot.val().recievedCount,
+           receivedCount: snapshot.val().receivedCount,
            donatedCount: snapshot.val().donatedCount,
+           avatar: snapshot.val().avatar
+
         }}
+
         dispatch({ type: FETCH_USER_DATA, payload: user })
     })
   }
@@ -103,7 +106,7 @@ export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,blood
   return dispatch => {
     dispatch({ type: LOADING })
     let phone = firebase.auth().currentUser.phoneNumber
-    firebase.database().ref(`users/${phone}`).update({ donatedCount:0,recievedCount:0,visible:false,firstName, lastName, patronymic,bloodType,rhFactor,currentRole })
+    firebase.database().ref(`users/${phone}`).update({ donatedCount:0,receivedCount:0,visible:false,firstName, lastName, patronymic,bloodType,rhFactor,currentRole })
     .then(()=>{
 
       let user = { firstName, lastName, patronymic,bloodType,rhFactor,currentRole }
