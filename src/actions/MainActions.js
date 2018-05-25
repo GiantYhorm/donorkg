@@ -4,15 +4,17 @@ import {
    INITIAL_UPDATE_USER_DATABASE,
    LOADING,
    FETCH_APPOPRIATE_BLOOD,
-   CONFORMED_USERS,
-   AVATAR_CHANGED
+   AVATAR_CHANGED,
+   FINISH_LOADING,
+   CONFORMED_DONOR,
+   CONFORMED_RECIPIENT,
   } from './types'
 import { Actions } from 'react-native-router-flux'
 
 export const fetchUserData = () => {
   return dispatch => {
 
-    dispatch({ type: LOADING })
+    dispatch({ type: LOADING })    
     const phone = firebase.auth().currentUser.phoneNumber;
     let user = null;
     firebase.database().ref(`/users/`).child(`${phone}/`).once('value', snapshot=>{
@@ -116,10 +118,30 @@ export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,blood
     })}
 }
 
-export const conformedUsers = ({phoneNumber}) =>{
+export const conformedUsers = ({phoneNumber,currentRole}) =>{
   return dispatch => {
-    let currentUserphoneNumber=firebase.auth().currentUser.phoneNumber
 
+    dispatch({type:LOADING})
+    let currentUserPhoneNumber = firebase.auth().currentUser.phoneNumber
+    var status = ''
+    let str = currentRole==='donor' ? 'sentRequests' : 'receivedRequests';
+    
+    firebase.database().ref(`users/${currentUserPhoneNumber}`).child(str).once('value', snapshot=> {
+        snapshot.forEach(childSnapshot => {      
+        if(childSnapshot.val().userPhoneNumber===phoneNumber&&childSnapshot.val().status==='1')
+        {
+          if(str==='sentRequests')
+          dispatch({type:CONFORMED_RECIPIENT, payload: childSnapshot.val()})
+          else
+          dispatch({type:CONFORMED_DONOR,payload : childSnapshot.val()})
+          
+        }
+        
+      })
+      
+    }).then(()=>{
+      dispatch({type: FINISH_LOADING})
+    })
 
   }
 }
