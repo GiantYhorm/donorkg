@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList,View,Text,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native';
+import { FlatList, ListView,View,Text,KeyboardAvoidingView,StatusBar, Animated, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux'
@@ -22,7 +22,7 @@ class SearchDonor extends Component {
     }
   }
 
-  componentDidMount(){  
+  componentDidMount(){
     this.makeRemoteRequest()
 }
 
@@ -38,15 +38,15 @@ class SearchDonor extends Component {
      obj.phoneNumber=childSnapshot.key
 
      if(phone!==obj.phoneNumber&&rhFactor===obj.rhFactor){
-       
+
        if(currentRole==='donor'){
          if(bloodType === 'O'){
            list.push(obj)
-           
+
          }
          else if(bloodType === 'A'){
            if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='AB'){
-             list.push(obj)        
+             list.push(obj)
            }
          }
          else if(bloodType === 'B'){
@@ -56,7 +56,7 @@ class SearchDonor extends Component {
          }
          else{
            if(bloodType==='AB'&&bloodType===childSnapshot.val().bloodType){
-             list.push(obj)          
+             list.push(obj)
           }
       }
      }
@@ -66,7 +66,7 @@ class SearchDonor extends Component {
         }
         else if(bloodType === 'A'){
            if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='O'){
-               list.push(obj)        
+               list.push(obj)
            }
         }
         else if(bloodType === 'B'){
@@ -77,22 +77,22 @@ class SearchDonor extends Component {
         else{
              if(bloodType==='AB'){
                list.push(obj)
-                     
+
              }
            }
         }
       }
-     }) 
+     })
     that.setState({list,loading:false,refreshing:false})
   })
-  
+
   }
 
   handleRefresh=()=>{
-  
+
     this.setState({ list:[],refreshing:true })
     this.makeRemoteRequest();
-  
+
   }
 
   renderSeparator(){
@@ -104,11 +104,11 @@ class SearchDonor extends Component {
     return <SearchBar onChangeText={(text)=>{this.onSearchChangeText(text)}} placeholder="Поиск..." lightTheme round />
   }
   onSearchChangeText(text){
-    
+
     let sorted = this.state.list.filter(function(item){
       return `${item.firstName} ${item.lastName}`.indexOf(text)>=0
     })
-    
+
     this.setState({list: sorted})
   }
   renderFooter=()=>{
@@ -131,7 +131,7 @@ class SearchDonor extends Component {
               subtitleStyle={[textStyle,{color:'#CED0CE'}]}
               subtitle={`${item.phoneNumber}`}
               avatar={{uri: item.avatar}}
-          />         
+          />
    )}
           keyExtractor={item => item.firstName}
           refreshing={this.state.refreshing}
@@ -172,4 +172,3 @@ const mapStateToProps = ({ main }) => {
 export default connect(mapStateToProps, {
   fetchAppropriateData,fetchUserData,
 })(SearchDonor);
-

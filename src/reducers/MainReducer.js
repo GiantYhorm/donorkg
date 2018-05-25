@@ -3,6 +3,7 @@ import {
    LOADING,
    INITIAL_UPDATE_USER_DATABASE,
    FETCH_APPOPRIATE_BLOOD,
+   AVATAR_CHANGED,
    CONFORMED_DONOR,
    CONFORMED_RECIPIENT,
    FINISH_LOADING
@@ -27,6 +28,12 @@ export default (state = INITIAL_STATE, action) => {
     return { ...state, user: action.payload, loading : false }
     case FETCH_APPOPRIATE_BLOOD:
     return { ...state, list: action.payload, loading: false }
+    case AVATAR_CHANGED:
+      return {
+        ...state,
+        user: { ...state.user, avatar: action.payload},
+      };
+
     case CONFORMED_DONOR:
     return {...state, donor: action.payload ,loading: false }
     case FINISH_LOADING:

@@ -9,23 +9,27 @@ import { textStyle } from './Variables'
 
 import LoginForm from './components/LoginForm';
 import SecondTab from './components/SecondTab';
+
+import ProfileEdit from './components/ProfileEdit';
 import ProfileView from './components/ProfileView';
 import InfoList from './components/InfoList';
 import Main from './components/Main';
 import Screen from './components/introduction/Screen';
+import Privacy from './components/Privacy';
+import History from './components/History';
 
 class RouterComponent extends Component {
 
   componentDidMount(){
     StatusBar.setHidden(true);
-    
+
   }
 
   render() {
     return (
     <Router>
 
-      
+
         <Scene key="root" hideNavBar>
 
         <Scene key="secondTab" hideNavBar component ={SecondTab} />
@@ -33,11 +37,15 @@ class RouterComponent extends Component {
         <Scene key="initial" hideNavBar initial component ={Initial} />
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />
+
+        <Scene key='profileEdit' component={ProfileEdit} />
         <Scene key="profileView" hideNavBar component={ProfileView} />
         <Scene key="screen" hideNavBar component ={Screen} />
-        
+        <Scene key='privacy' hideNavBar component={Privacy} />
+        <Scene key='userHistory' hideNavBar component={History} />
+
         </Scene>
-    
+
     </Router>
     )
   }

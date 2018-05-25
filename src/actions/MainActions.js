@@ -4,6 +4,7 @@ import {
    INITIAL_UPDATE_USER_DATABASE,
    LOADING,
    FETCH_APPOPRIATE_BLOOD,
+   AVATAR_CHANGED,
    FINISH_LOADING,
    CONFORMED_DONOR,
    CONFORMED_RECIPIENT,
@@ -12,11 +13,12 @@ import { Actions } from 'react-native-router-flux'
 
 export const fetchUserData = () => {
   return dispatch => {
+
     dispatch({ type: LOADING })    
     const phone = firebase.auth().currentUser.phoneNumber;
     let user = null;
     firebase.database().ref(`/users/`).child(`${phone}/`).once('value', snapshot=>{
-      
+
       if(snapshot.val()!==null){
          user = {
 
@@ -32,7 +34,7 @@ export const fetchUserData = () => {
            avatar: snapshot.val().avatar
 
         }}
-        
+
         dispatch({ type: FETCH_USER_DATA, payload: user })
     })
   }
@@ -44,22 +46,22 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
     let phone = firebase.auth().currentUser.phoneNumber
     let list = []
     let obj = {}
-    
+
     firebase.database().ref(`users/`).on('value', snapshot => {
      snapshot.forEach(childSnapshot => {
       obj = childSnapshot.val()
       obj.phone=childSnapshot.key
 
       if(phone!==obj.phone&&rhFactor===obj.rhFactor){
-        
+
         if(currentRole==='donor'){
           if(bloodType === 'O'){
             list.push(obj)
-            
+
           }
           else if(bloodType === 'A'){
             if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='AB'){
-              list.push(obj)        
+              list.push(obj)
             }
           }
           else if(bloodType === 'B'){
@@ -69,7 +71,7 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
           }
           else{
             if(bloodType==='AB'&&bloodType===childSnapshot.val().bloodType){
-              list.push(obj)          
+              list.push(obj)
            }
        }
       }
@@ -79,7 +81,7 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
          }
          else if(bloodType === 'A'){
             if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='O'){
-                list.push(obj)        
+                list.push(obj)
             }
          }
          else if(bloodType === 'B'){
@@ -90,34 +92,35 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
          else{
               if(bloodType==='AB'){
                 list.push(obj)
-                      
+
              }
          }
       }
     }
-  }) 
+  })
 })
-  dispatch({type: FETCH_APPOPRIATE_BLOOD, payload: list})  
+  dispatch({type: FETCH_APPOPRIATE_BLOOD, payload: list})
 
   }
 }
 
 export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,bloodType,rhFactor,currentRole,}) => {
-  
+
   return dispatch => {
     dispatch({ type: LOADING })
     let phone = firebase.auth().currentUser.phoneNumber
-    firebase.database().ref(`users/${phone}`).update({ myDonations:0,meDonations:0,visible:false,firstName, lastName, patronymic,bloodType,rhFactor,currentRole })
+    firebase.database().ref(`users/${phone}`).update({ donatedCount:0,receivedCount:0,visible:false,firstName, lastName, patronymic,bloodType,rhFactor,currentRole })
     .then(()=>{
 
       let user = { firstName, lastName, patronymic,bloodType,rhFactor,currentRole }
       dispatch({ type: INITIAL_UPDATE_USER_DATABASE,payload : user })
-    
+
     })}
 }
 
 export const conformedUsers = ({phoneNumber,currentRole}) =>{
   return dispatch => {
+
     dispatch({type:LOADING})
     let currentUserPhoneNumber = firebase.auth().currentUser.phoneNumber
     var status = ''
@@ -151,3 +154,18 @@ export const selectLibrary = (libraryId) => {
     payload: libraryId
   }
 }
+
+export const avatarChanged = (url) => {
+  return dispatch => {
+    const { phoneNumber } = firebase.auth().currentUser;
+
+    firebase.database().ref(`users/${phoneNumber}`).update({
+      avatar: url,
+    }).then(() => {
+      dispatch({
+        type: AVATAR_CHANGED,
+        payload: url,
+      });
+    }).catch(err => console.log(err));
+  };
+};

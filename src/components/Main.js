@@ -82,6 +82,7 @@ const styles = {
     tabButton:{
       alignItems: 'center',
       justifyContent: 'center',
+
       flex: 1
     },
     tab:{

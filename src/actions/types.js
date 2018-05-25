@@ -6,5 +6,6 @@ export const FINISH_LOADING = 'finish_loading'
 
 export const FETCH_PROFILE_DATA = 'fetch_profile_data';
 
+export const AVATAR_CHANGED = 'avatar_changed';
 export const CONFORMED_DONOR = 'conformed_donor';
 export const CONFORMED_RECIPIENT = 'conformed_recipient';

@@ -19,7 +19,7 @@ const Statistics = (props) => {
   };
 
   const renderReceives = () => {
-    if (props.received) {
+    if (props.received !== undefined) {
       return (
         <View style={styles.block}>
           <Text style={styles.number}>{props.received}</Text>
@@ -30,7 +30,7 @@ const Statistics = (props) => {
   };
 
   const renderDonations = () => {
-    if (props.donated) {
+    if (props.donated !== undefined) {
       return (
         <View style={styles.block}>
           <Text style={styles.number}>{props.donated}</Text>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   number: {
     ...textStyle,
     fontSize: 18,
-    color: '#707070',
+    color: RED,
     fontWeight: '600',
   },
   label: {
