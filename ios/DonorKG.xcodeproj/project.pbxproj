@@ -58,6 +58,7 @@
 		046BA2CBC3FF4A33A0314FF6 /* AvenirNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D932EA12A08645EBA99B455F /* AvenirNextLTPro-Regular.otf */; };
 		A00B170F088749E3A13B9262 /* AvenirNextCyr-Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9ED4B9E17B744F1FB447E52C /* AvenirNextCyr-Demi.ttf */; };
 		AC08CD57CD8C4820BD1652B7 /* AvenirNextCyr-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EB653997BCD43BE96392EC4 /* AvenirNextCyr-Regular.ttf */; };
+		087F3D4F2D9943A6ADE21D3A /* AvenirNextCyr-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD7204E6E6494113A220B5A4 /* AvenirNextCyr-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -390,6 +391,7 @@
 		D932EA12A08645EBA99B455F /* AvenirNextLTPro-Regular.otf */ = {isa = PBXFileReference; name = "AvenirNextLTPro-Regular.otf"; path = "../src/assets/fonts/AvenirNextLTPro-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9ED4B9E17B744F1FB447E52C /* AvenirNextCyr-Demi.ttf */ = {isa = PBXFileReference; name = "AvenirNextCyr-Demi.ttf"; path = "../src/assets/fonts/AvenirNextCyr-Demi.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8EB653997BCD43BE96392EC4 /* AvenirNextCyr-Regular.ttf */ = {isa = PBXFileReference; name = "AvenirNextCyr-Regular.ttf"; path = "../src/assets/fonts/AvenirNextCyr-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DD7204E6E6494113A220B5A4 /* AvenirNextCyr-Medium.ttf */ = {isa = PBXFileReference; name = "AvenirNextCyr-Medium.ttf"; path = "../src/assets/fonts/AvenirNextCyr-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -682,6 +684,7 @@
 				D932EA12A08645EBA99B455F /* AvenirNextLTPro-Regular.otf */,
 				9ED4B9E17B744F1FB447E52C /* AvenirNextCyr-Demi.ttf */,
 				8EB653997BCD43BE96392EC4 /* AvenirNextCyr-Regular.ttf */,
+				DD7204E6E6494113A220B5A4 /* AvenirNextCyr-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1148,6 +1151,7 @@
 				046BA2CBC3FF4A33A0314FF6 /* AvenirNextLTPro-Regular.otf in Resources */,
 				A00B170F088749E3A13B9262 /* AvenirNextCyr-Demi.ttf in Resources */,
 				AC08CD57CD8C4820BD1652B7 /* AvenirNextCyr-Regular.ttf in Resources */,
+				087F3D4F2D9943A6ADE21D3A /* AvenirNextCyr-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

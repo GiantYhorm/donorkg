@@ -146,15 +146,6 @@ export const conformedUsers = ({phoneNumber,currentRole}) =>{
   }
 }
 
-
-
-export const selectLibrary = (libraryId) => {
-  return {
-    type: 'select_library',
-    payload: libraryId
-  }
-}
-
 export const avatarChanged = (url) => {
   return dispatch => {
     const { phoneNumber } = firebase.auth().currentUser;

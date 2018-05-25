@@ -3,10 +3,10 @@ package com.donorkg;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.RNTextInputMask.RNTextInputMaskPackage;
-import io.invertase.firebase.RNFirebasePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.RNTextInputMask.RNTextInputMaskPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import io.invertase.firebase.RNFirebasePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -31,8 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNTextInputMaskPackage(),
             new VectorIconsPackage(),
+            new RNTextInputMaskPackage(),
             new PickerPackage(),
             new RNFirebasePackage(),
             new RNFetchBlobPackage(),
