@@ -107,7 +107,7 @@ class ProfileView extends Component {
     if(this.props.recipient!==null){
       return(
         <View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>
-            <Text style={[textStyle,{fontSize: 15,color: '#707070'}]}>Ожидайте ответа от реципиета. . .</Text>
+            <Text style={[textStyle,{fontSize: 15,color: '#707070'}]}>Ожидайте ответа от реципиета . . .</Text>
         </View>  
       )
     }
