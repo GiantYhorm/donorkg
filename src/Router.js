@@ -5,14 +5,20 @@ import {Icon} from 'react-native-elements';
 import {Actions} from 'react-native-router-flux';
 import Initial from './components/Initial';
 import firebase from 'firebase';
-import { textStyle } from './Variables'
+import { textStyle, headerTextStyle } from './Variables'
 
 import LoginForm from './components/LoginForm';
 import SecondTab from './components/SecondTab';
 
 import ProfileEdit from './components/ProfileEdit';
 import ProfileView from './components/ProfileView';
-import InfoList from './components/InfoList';
+import InformationTab from './components/InformationTab';
+import {
+  GeneralRules,
+  BeforeDonationPage,
+  DonationProcess,
+  AfterDonation
+} from './components/information/';
 import Main from './components/Main';
 import Screen from './components/introduction/Screen';
 import Privacy from './components/Privacy';
@@ -27,13 +33,17 @@ class RouterComponent extends Component {
 
   render() {
     return (
-    <Router>
+    <Router titleStyle={headerTextStyle}>
 
 
         <Scene key="root" hideNavBar>
 
         <Scene key="secondTab" hideNavBar component ={SecondTab} />
-        <Scene key="infoList" hideNavBar={false} title='Info' component={InfoList} navigationBarStyle={{elevation: 0}} />
+        <Scene key="info" hideNavBar={false} title='Информация' component={InformationTab} />
+        <Scene key="beforeDonation" hideNavBar={false} title='До донации' component={BeforeDonationPage} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="donationProcess" hideNavBar={false} title='Процесс донации' component={DonationProcess} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="afterDonation" hideNavBar={false} title='После донации' component={AfterDonation} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="generalRules" hideNavBar={false} title='Основные правила' component={GeneralRules} rightTitle navBarButtonColor='#e5385d' />
         <Scene key="initial" hideNavBar initial component ={Initial} />
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />
