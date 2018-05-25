@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   Statistics,
@@ -21,6 +22,19 @@ import { RED, SCREEN_WIDTH, textStyle } from '../Variables';
 class Profile extends Component {
   onProfileEdit() {
     Actions.profileEdit();
+  }
+  onTermsPress() {
+    Actions.privacy();
+  }
+  onHistoryPress() {
+    Actions.userHistory();
+  }
+
+  onLogout() {
+    firebase.auth().signOut()
+      .then(() => {
+        Actions.initial();
+      });
   }
 
   render() {
@@ -52,9 +66,18 @@ class Profile extends Component {
           >
             Редактировать профиль
           </MenuItem>*/}
-          <MenuItem iconName='clock' iconSize={18}>История</MenuItem>
-          <MenuItem iconName='clipboard' iconSize={18}>Условия пользования</MenuItem>
           <MenuItem
+            iconName='clock'
+            iconSize={18}
+            onPress={this.onHistoryPress}
+          >История</MenuItem>
+          <MenuItem
+            iconName='clipboard'
+            iconSize={18}
+            onPress={this.onTermsPress}
+          >Условия пользования</MenuItem>
+          <MenuItem
+            onPress={this.onLogout}
             labelStyle={styles.logout}
             iconStyle={styles.logout}
             iconSize={18}

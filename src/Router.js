@@ -15,6 +15,8 @@ import ProfileView from './components/ProfileView';
 import InfoList from './components/InfoList';
 import Main from './components/Main';
 import Screen from './components/introduction/Screen';
+import Privacy from './components/Privacy';
+import History from './components/History';
 
 class RouterComponent extends Component {
 
@@ -39,6 +41,8 @@ class RouterComponent extends Component {
         <Scene key='profileEdit' component={ProfileEdit} />
         <Scene key="profileView" hideNavBar component={ProfileView} />
         <Scene key="screen" hideNavBar component ={Screen} />
+        <Scene key='privacy' hideNavBar component={Privacy} />
+        <Scene key='userHistory' hideNavBar component={History} />
 
         </Scene>
 

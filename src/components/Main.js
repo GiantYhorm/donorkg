@@ -85,8 +85,7 @@ const styles = {
       width:45,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor:'green'
-
+      backgroundColor:'green',
     },
     tab:{
       flex: 1,

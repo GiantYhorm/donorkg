@@ -3,6 +3,8 @@ import {
    LOADING,
    INITIAL_UPDATE_USER_DATABASE,
    FETCH_APPOPRIATE_BLOOD,
+   CONFORMED_USERS,
+   AVATAR_CHANGED,
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -21,6 +23,14 @@ export default (state = INITIAL_STATE, action) => {
     return { ...state, user: action.payload, loading : false }
     case FETCH_APPOPRIATE_BLOOD:
     return { ...state, list: action.payload, loading: false }
+
+    case CONFORMED_USERS:
+    return {...state, status: action.payload ,loading: false }
+    case AVATAR_CHANGED:
+      return {
+        ...state,
+        user: { ...state.user, avatar: action.payload},
+      };
     default:
             return state
     }

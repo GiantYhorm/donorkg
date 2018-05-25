@@ -4,6 +4,8 @@ import {
    INITIAL_UPDATE_USER_DATABASE,
    LOADING,
    FETCH_APPOPRIATE_BLOOD,
+   CONFORMED_USERS,
+   AVATAR_CHANGED
   } from './types'
 import { Actions } from 'react-native-router-flux'
 
@@ -23,7 +25,7 @@ export const fetchUserData = () => {
            patronymic: snapshot.val().patronymic,
            bloodType: snapshot.val().bloodType,
            rhFactor: snapshot.val().rhFactor,
-           phone,
+           phoneNumber: phone,
            currentRole: snapshot.val().currentRole,
            receivedCount: snapshot.val().receivedCount,
            donatedCount: snapshot.val().donatedCount,
@@ -95,7 +97,6 @@ export const fetchAppropriateData = ({bloodType,rhFactor,currentRole}) =>{
     }
   })
 })
-  console.log(list)
   dispatch({type: FETCH_APPOPRIATE_BLOOD, payload: list})
 
   }
@@ -115,9 +116,34 @@ export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,blood
     })}
 }
 
+export const conformedUsers = ({phoneNumber}) =>{
+  return dispatch => {
+    let currentUserphoneNumber=firebase.auth().currentUser.phoneNumber
+
+
+  }
+}
+
+
+
 export const selectLibrary = (libraryId) => {
   return {
     type: 'select_library',
     payload: libraryId
   }
 }
+
+export const avatarChanged = (url) => {
+  return dispatch => {
+    const { phoneNumber } = firebase.auth().currentUser;
+
+    firebase.database().ref(`users/${phoneNumber}`).update({
+      avatar: url,
+    }).then(() => {
+      dispatch({
+        type: AVATAR_CHANGED,
+        payload: url,
+      });
+    }).catch(err => console.log(err));
+  };
+};
