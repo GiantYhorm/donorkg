@@ -5,7 +5,7 @@ import {Icon} from 'react-native-elements';
 import {Actions} from 'react-native-router-flux';
 import Initial from './components/Initial';
 import firebase from 'firebase';
-import { textStyle } from './Variables'
+import { textStyle, headerTextStyle } from './Variables'
 
 import LoginForm from './components/LoginForm';
 import SecondTab from './components/SecondTab';
@@ -29,17 +29,17 @@ class RouterComponent extends Component {
 
   render() {
     return (
-    <Router>
+    <Router titleStyle={headerTextStyle}>
 
       
         <Scene key="root" hideNavBar>
 
         <Scene key="secondTab" hideNavBar component ={SecondTab} />
-        <Scene key="info" title='Information' component={InformationTab} />
-        <Scene key="beforeDonation" title='Before Donation' component={BeforeDonationPage} />
-        <Scene key="donationProcess" title='Donation Process' component={DonationProcess} />
-        <Scene key="afterDonation" title='After Donation' component={AfterDonation} />
-        <Scene key="generalRules" title='General Rules' component={GeneralRules} />
+        <Scene key="info" hideNavBar={false} title='Информация' component={InformationTab} />
+        <Scene key="beforeDonation" hideNavBar={false} title='До донации' component={BeforeDonationPage} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="donationProcess" hideNavBar={false} title='Процесс донации' component={DonationProcess} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="afterDonation" hideNavBar={false} title='После донации' component={AfterDonation} rightTitle navBarButtonColor='#e5385d' />
+        <Scene key="generalRules" hideNavBar={false} title='Основные правила' component={GeneralRules} rightTitle navBarButtonColor='#e5385d' />
         <Scene key="initial" hideNavBar initial component ={Initial} />
         <Scene key="login" component={LoginForm} />
         <Scene key="main" hideNavBar component={Main} />

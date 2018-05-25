@@ -2,10 +2,12 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {boldTextStyle, SCREEN_HEIGHT, textStyle} from '../../Variables';
+import {boldTextStyle, SCREEN_HEIGHT, textStyle, RED} from '../../Variables';
+import { BackgroundImage } from '../profile';
 
 const InfoItem = (props) => {
   const renderIcon = (icon) => {
@@ -30,13 +32,34 @@ const InfoItem = (props) => {
     }
   };
 
+  const renderTitle = (title) => {
+    if (title) {
+      return (
+        <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
+      )
+    }
+  };
+
+  const renderImage = (image) => {
+    if (image) {
+      return (
+        <Image
+          source={{uri: props.image}}
+          style={styles.imageStyle}
+          resizeMode='cover'
+        />
+      )
+    }
+  };
+
   return (
       <View style={[styles.container, props.cardStyle]}>
         {renderIcon(props.iconName)}
         {renderNumber(props.number)}
+        {renderImage(props.image)}
         <View style={styles.textArea}>
-          <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.description}>{props.description}</Text>
+          {renderTitle(props.title)}
+          <Text style={[styles.description, props.descriptionStyle]}>{props.description}</Text>
         </View>
       </View>
   );
@@ -50,19 +73,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     alignItems: 'center',
     borderRadius: 5,
-    borderWidth: 3,
-    borderColor: '#000'
+    elevation: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
   },
   icon: {
     color: '#000',
+    paddingHorizontal: 10
   },
   number: {
     ...boldTextStyle,
-    fontSize: 50
+    fontSize: 50,
+    paddingHorizontal: 10,
+    color: RED
   },
   title: {
     ...boldTextStyle,
-    fontSize: 24,
+    fontSize: 20,
   },
   description: {
     ...textStyle,
@@ -72,6 +99,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
     marginVertical: 5
+  },
+  imageStyle: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    opacity: 0.8
   }
 });
 
