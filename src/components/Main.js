@@ -50,27 +50,26 @@ class Main extends Component {
         {this.renderContent()}
       </View>
       <View style={{ flex: 1,borderTopWidth: 0.2,flexDirection: 'row' }}>
-        <View style={[styles.tab,{}]}>
-          <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '0' })} style={styles.tabButton}>
-            <Icon name='book' style={{ color: this.getIconColor('0')}} size={23} />
-          </TouchableWithoutFeedback>
+        
+       <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '0' })} style={[styles.tabButton]}>
+          <View style={[styles.tab,{}]}>
+            <Icon name='book' style={{ color: this.getIconColor('0')}} size={22} />
+          
         </View>
-
-        <View style={[styles.tab]}>
+          </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '1' })} style={styles.tabButton}>
-            <Icon name='activity' style={{ color: this.getIconColor('1')}} size={25} />
-          </TouchableWithoutFeedback>
+  
+        <View style={[styles.tab]}>
+            <Icon name='activity' style={{ color: this.getIconColor('1')}} size={22} />
         </View>
-
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '2' })} style={styles.tabButton}>
         <View style={styles.tab}>
-          <TouchableWithoutFeedback onPress={()=> this.setState({ indexTab: '2' })} style={styles.tabButton}>
-
-            <Icon name='settings' style={{ color: this.getIconColor('2')}} size={25} />
-          </TouchableWithoutFeedback>
+            <Icon name='settings' style={{ color: this.getIconColor('2')}} size={21} />
         </View>
+        </TouchableWithoutFeedback>
       </View>
     </View>
-
    )
   }
 }
@@ -81,12 +80,9 @@ const styles = {
       backgroundColor:'#fff',
     },
     tabButton:{
-      height: 45,
-      width:45,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor:'green'
-
+      flex: 1
     },
     tab:{
       flex: 1,
