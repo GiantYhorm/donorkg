@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    backgroundColor: '#00000040'
+    backgroundColor: '#00000050'
   },
   image: {
     position: 'absolute',

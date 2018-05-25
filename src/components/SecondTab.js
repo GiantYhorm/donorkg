@@ -142,11 +142,11 @@ class SecondTab extends Component {
       <View style={{ flex:14, justifyContent:'center', alignItems:'center' }}>
 
         <KeyboardAwareScrollView
-        style={{ backgroundColor: '#4c69a5' }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={styles.container}
-        scrollEnabled={false}
-      >
+          style={{ backgroundColor: '#4c69a5' }}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          contentContainerStyle={styles.container}
+          scrollEnabled={false}
+        >
 
         <TextInput
           spellCheck={false}
@@ -169,7 +169,7 @@ class SecondTab extends Component {
           style={[styles.input,{ width: this.state.width/1.5 }]}
         />
         <TextInput
-        style={textStyle}
+          style={textStyle}
           spellCheck={false}
           autoCorrect={false}
           onChangeText={(patronymic)=>this.setState({ patronymic })}
@@ -274,19 +274,17 @@ class SecondTab extends Component {
       else if(this.state.currentStep === '4')
       return(
         <View style={{ flex:15, alignItems:'center' }}>
-                    <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
-                    <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'donor' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-                      <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'donor')}]}>Донор</Text>
-                     </TouchableOpacity>
-                     <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'recipient' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
-                     <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'recipient')}]}>Реципиент</Text>
-                    </TouchableOpacity>
-        </View>
-
+          <View style={{ flex: 7,flexDirection: 'row', marginLeft: 25 }}>
+            <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'donor' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+              <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'donor')}]}>Донор</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{ this.setState({ currentRole: 'recipient' }) }} style={[styles.bloodType,{justifyContent:'flex-start',alignItems:'center'}]}>
+              <Text style={[textStyle,{color:this.getColor(this.state.currentRole,'recipient')}]}>Реципиент</Text>
+            </TouchableOpacity>
+          </View>
         <View style={{flex:1}}>
-        {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
+          {this.state.error ? <Text style={[textStyle,{fontSize: 16,marginTop:15,justifyContent:'flex-end',color: 'red',alignItems:'center'}]}>{this.state.error}</Text> :null}
         </View>
-
         <View style={{flex:7}}>
         <TouchableOpacity onPress={()=>{ 
           
@@ -357,9 +355,9 @@ class SecondTab extends Component {
     renderContent(){
       if(this.props.loading){
         return(            
-        <View style={{flex: 1,alignItems:'center',justifyContent:'center'}}>
-<Progress.Circle size={40} color={RED} indeterminate={true} />
-</View>
+          <View style={{flex: 1,alignItems:'center',justifyContent:'center'}}>
+            <Progress.Circle size={40} color={RED} indeterminate={true} />
+          </View>
         )
       }
       if(this.props.user === null){
