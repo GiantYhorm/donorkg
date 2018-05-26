@@ -4,7 +4,7 @@ import {
    INITIAL_UPDATE_USER_DATABASE,
    FETCH_APPOPRIATE_BLOOD,
    CONFORMED_USERS,
-   AVATAR_CHANGED,
+   PROFILE_UPDATE,
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -26,10 +26,15 @@ export default (state = INITIAL_STATE, action) => {
 
     case CONFORMED_USERS:
     return {...state, status: action.payload ,loading: false }
-    case AVATAR_CHANGED:
+    case PROFILE_UPDATE:
       return {
         ...state,
-        user: { ...state.user, avatar: action.payload},
+        user: {
+          ...state.user,
+          avatar: action.payload.avatar,
+          bloodType: action.payload.bloodType,
+          rhFactor: action.payload.rhFactor,
+        },
       };
     default:
             return state

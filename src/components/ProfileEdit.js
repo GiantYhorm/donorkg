@@ -7,27 +7,58 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import { BackgroundImage } from './profile';
+import { BackgroundImage, SelectBloodType } from './profile';
 import { pickImageFromGallety } from '../modules';
-import { avatarChanged } from '../actions';
+import { profileEditSubmit } from '../actions';
 import firebase from 'react-native-firebase';
+import { SCREEN_WIDTH } from '../Variables';
 
 class ProfileEdit extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bloodType: 'O',
+      avatar: this.props.avatar,
+      rhFactor: this.props.rhFactor,
+    };
+  }
+
   avatarChange() {
-    pickImageFromGallety(this.props.avatarChanged);
+    pickImageFromGallety((url) => this.setState({ avatar: url }));
+  }
+
+  changeBloodType(type) {
+    this.setState({
+      bloodType: type,
+    });
+  }
+
+  changeFactor(factor) {
+    this.setState({
+      rhFactor: factor,
+    });
+  }
+
+  submit() {
+    console.log('submit');
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <BackgroundImage source={this.props.avatar} style={styles.avatar}>
+        <BackgroundImage source={this.state.avatar} style={styles.avatar}>
           <View style={styles.imageContent}>
             <TouchableOpacity onPress={this.avatarChange.bind(this)}>
               <Icon name='camera' size={24} style={styles.icon} />
             </TouchableOpacity>
           </View>
         </BackgroundImage>
-        <View style={styles.bloodContainer}>
+        <View style={styles.options}>
+          <SelectBloodType onSelect={this.changeBloodType.bind(this)} />
+          <SelectFactor onSelect={this.changeFactor.bind(this)}/>
+          <TouchableOpacity onPress={this.submit.bind(this)}>
+            <Text style={styles.submitText}>Обновить</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -51,17 +82,18 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#fff'
   },
-  bloodContainer: {
+  options: {
     flex: 3,
-  }
+    width: SCREEN_WIDTH,
+  },
 });
 
 const mapStateToProps = (state) => {
-  const { avatar } = state.main.user;
+  const { avatar, rhFactor } = state.main.user;
 
-  return { avatar };
+  return { avatar, rhFactor };
 };
 
 export default connect(mapStateToProps, {
-  avatarChanged,
+  profileEditSubmit,
 })(ProfileEdit);

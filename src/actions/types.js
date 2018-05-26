@@ -6,4 +6,4 @@ export const FETCH_APPOPRIATE_BLOOD = 'fetch_appropriate_blood';
 export const FETCH_PROFILE_DATA = 'fetch_profile_data';
 
 export const CONFORMED_USERS = 'conformed_users';
-export const AVATAR_CHANGED = 'avatar_changed';
+export const PROFILE_UPDATE = 'profile_update';

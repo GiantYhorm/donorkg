@@ -8,8 +8,8 @@ export const pickImageFromGallety = (func) => {
     mediaType: 'photo',
   }).then(image => {
     const { phoneNumber } = firebase.auth().currentUser;
-
-    const imageRef = firebase.storage().ref(`users/${phoneNumber}/avatar.jpg`);
+    const timestamp = new Date().getTime().toString();
+    const imageRef = firebase.storage().ref(`users/${phoneNumber}/${timestamp}.jpg`);
     imageRef.putFile(image.path)
       .then(() => {
         return imageRef.getDownloadURL();

@@ -5,7 +5,7 @@ import {
    LOADING,
    FETCH_APPOPRIATE_BLOOD,
    CONFORMED_USERS,
-   AVATAR_CHANGED
+   PROFILE_UPDATE,
   } from './types'
 import { Actions } from 'react-native-router-flux'
 
@@ -133,17 +133,18 @@ export const selectLibrary = (libraryId) => {
   }
 }
 
-export const avatarChanged = (url) => {
-  return dispatch => {
-    const { phoneNumber } = firebase.auth().currentUser;
+export const profileEditSubmit = (type, rhFactor, image) => {
+  const { phoneNumber } = firebase.auth().currentUser;
 
-    firebase.database().ref(`users/${phoneNumber}`).update({
-      avatar: url,
-    }).then(() => {
-      dispatch({
-        type: AVATAR_CHANGED,
-        payload: url,
-      });
-    }).catch(err => console.log(err));
-  };
+  firebase.database().ref(`users/${phoneNumber}`).update({
+    avatar: image,
+    bloodType: type,
+    rhFactor: rhFactor,
+  }).then(() => {
+    dispatch({
+      type: PROFILE_UPDATE,
+      payload: { avatar: image, bloodType: type, rhFactor },
+    });
+    Actions.main();
+  }).catch(err => console.log(err));
 };
