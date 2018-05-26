@@ -16,8 +16,6 @@ import * as Progress from 'react-native-progress';
 import Communications from 'react-native-communications';
 import ImagePicker from 'react-native-image-crop-picker';
 
-
-
 class ProfileView extends Component {
   constructor(props){
     super(props)
@@ -28,7 +26,9 @@ class ProfileView extends Component {
       loadingRequest: false,
 
       recipient: false,
-      confirmed:false
+      confirmed:false,
+      block: true,
+      days: ''
     }
   }
 
@@ -98,13 +98,31 @@ class ProfileView extends Component {
   }
 
   renderDonorContent(){
+    this.setState({loading: true})
+    var that = this
+    firebase.database().ref(`users/${this.props.user.phoneNumber}`).once('value',snapshot=>{
+      let a = new Date(snapshot.val().block)
+      a=new Date().getTime() - a.getTime()
+      a=a/(1000*60*60*24)
+      if(Math.floor(a)>90){
+        that.setState({block : false})
+      }
+      else {
+        that.setState({block: true,days : Math.floor(a)})
+      }
+    })
     if(this.state.loading || this.props.loading)
     return(
       <View style={styles.menu}>
         <Progress.Circle size={40} color={RED} indeterminate={true} />
       </View>
     )
-    if(this.props.recipient!==null&&this.state.recipient){
+    else if(this.state.block){
+<View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>
+            <Text style={[textStyle,{fontSize: 15,color: '#707070'}]}>Вы сдавали кровь {this.state.days} дней(ь) назад</Text>
+        </View>
+    }
+    else if(this.props.recipient!==null&&this.state.recipient){
     
       return(
         <View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>

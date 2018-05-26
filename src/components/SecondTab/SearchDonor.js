@@ -128,8 +128,6 @@ class SearchDonor extends Component {
               title={`${item.firstName} ${item.lastName}`}
               containerStyle={{borderBottomWidth:0}}
               titleStyle={[textStyle,]}
-              subtitleStyle={[textStyle,{color:'#CED0CE'}]}
-              subtitle={`${item.phoneNumber}`}
               avatar={{uri: item.avatar}}
           />
    )}
