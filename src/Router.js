@@ -20,7 +20,7 @@ import {
   AfterDonation
 } from './components/information/';
 import Main from './components/Main';
-import Screen from './components/introduction/Screen';
+import WelcomeScreen from './components/WelcomeScreen';
 import Privacy from './components/Privacy';
 import History from './components/History';
 
@@ -50,7 +50,7 @@ class RouterComponent extends Component {
 
         <Scene key='profileEdit' component={ProfileEdit} />
         <Scene key="profileView" hideNavBar component={ProfileView} />
-        <Scene key="screen" hideNavBar component ={Screen} />
+        <Scene key="welcomeScreen" hideNavBar component ={WelcomeScreen} />
         <Scene key='privacy' hideNavBar component={Privacy} />
         <Scene key='userHistory' hideNavBar component={History} />
 
