@@ -7,11 +7,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
-import { BackgroundImage, SelectBloodType } from './profile';
+import { BackgroundImage, SelectBloodType, SelectFactor } from './profile';
 import { pickImageFromGallety } from '../modules';
 import { profileEditSubmit } from '../actions';
 import firebase from 'react-native-firebase';
-import { SCREEN_WIDTH } from '../Variables';
+import { SCREEN_WIDTH, RED, textStyle } from '../Variables';
 
 class ProfileEdit extends Component {
   constructor(props) {
@@ -40,7 +40,11 @@ class ProfileEdit extends Component {
   }
 
   submit() {
-    console.log('submit');
+    this.props.profileEditSubmit({
+      avatar: this.state.avatar,
+      bloodType: this.state.bloodType,
+      rhFactor: this.state.rhFactor,
+    });
   }
 
   render() {
@@ -56,9 +60,11 @@ class ProfileEdit extends Component {
         <View style={styles.options}>
           <SelectBloodType onSelect={this.changeBloodType.bind(this)} />
           <SelectFactor onSelect={this.changeFactor.bind(this)}/>
-          <TouchableOpacity onPress={this.submit.bind(this)}>
-            <Text style={styles.submitText}>Обновить</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity onPress={this.submit.bind(this)} style={styles.submit}>
+              <Text style={styles.submitText}>Обновить</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -86,6 +92,23 @@ const styles = StyleSheet.create({
     flex: 3,
     width: SCREEN_WIDTH,
   },
+  buttonWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  submit: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: RED,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 1000,
+  },
+  submitText: {
+    ...textStyle,
+    color: '#fff',
+  }
 });
 
 const mapStateToProps = (state) => {

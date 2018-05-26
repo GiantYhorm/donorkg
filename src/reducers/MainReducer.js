@@ -5,12 +5,19 @@ import {
    FETCH_APPOPRIATE_BLOOD,
    CONFORMED_USERS,
    PROFILE_UPDATE,
+   CONFORMED_DONOR,
+   CONFORMED_RECIPIENT,
+   FINISH_LOADING,
+   RESPONSE_REQUEST
 } from '../actions/types'
 
 const INITIAL_STATE = {
   user: null,
   list: null,
-  loading : false
+  loading : false,
+
+  donor: null,
+  recipient: null
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -36,6 +43,15 @@ export default (state = INITIAL_STATE, action) => {
           rhFactor: action.payload.rhFactor,
         },
       };
+
+    case CONFORMED_DONOR:
+    return {...state, donor: action.payload ,loading: false }
+    case FINISH_LOADING:
+    return {...state, loading: false }
+
+    case CONFORMED_RECIPIENT:
+    return {...state, recipient: action.payload ,loading: false }
+
     default:
             return state
     }

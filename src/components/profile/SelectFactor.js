@@ -39,12 +39,17 @@ class SelectFactor extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.onPositive.bind(this)}>
-          <Icon name='plus' size={47} style={positiveStyle} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.onNegative.bind(this)}>
-          <Icon name='minus' size={47} style={negativeStyle} />
-        </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Резус фактор</Text>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity onPress={this.onPositive.bind(this)} style={styles.item}>
+            <Icon name='plus' size={47} style={positiveStyle} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onNegative.bind(this)} style={styles.item}>
+            <Icon name='minus' size={47} style={negativeStyle} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -52,33 +57,36 @@ class SelectFactor extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     flex: 1,
+  },
+  row: {
+    flexDirection: 'row',
+    paddingVertical: 20,
   },
   posActive: {
-    flex: 1,
     color: RED,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   posInActive: {
-    flex: 1,
     color: '#d0d0d0',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   negActive: {
-    flex: 1,
     color: RED,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   negInactive: {
-    flex: 1,
     color: '#d0d0d0',
+  },
+  item: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  titleContainer: {
+    alignItems: 'center',
+  },
+  title: {
+    ...textStyle,
+    fontSize: 18,
+  }
 });
 
 export { SelectFactor };

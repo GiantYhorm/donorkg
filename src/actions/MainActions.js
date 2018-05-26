@@ -6,6 +6,10 @@ import {
    FETCH_APPOPRIATE_BLOOD,
    CONFORMED_USERS,
    PROFILE_UPDATE,
+   FINISH_LOADING,
+   CONFORMED_DONOR,
+   CONFORMED_RECIPIENT,
+   RESPONSE_REQUEST,
   } from './types'
 import { Actions } from 'react-native-router-flux'
 
@@ -116,10 +120,30 @@ export const initialUpdateUserDatabase = ({  firstName,lastName,patronymic,blood
     })}
 }
 
-export const conformedUsers = ({phoneNumber}) =>{
+export const conformedUsers = ({phoneNumber,currentRole}) =>{
   return dispatch => {
-    let currentUserphoneNumber=firebase.auth().currentUser.phoneNumber
 
+    dispatch({type:LOADING})
+    let currentUserPhoneNumber = firebase.auth().currentUser.phoneNumber
+    var status = ''
+    let str = currentRole==='donor' ? 'sentRequests' : 'receivedRequests';
+
+    firebase.database().ref(`users/${currentUserPhoneNumber}`).child(str).once('value', snapshot=> {
+        snapshot.forEach(childSnapshot => {
+        if(childSnapshot.val().userPhoneNumber===phoneNumber&&childSnapshot.val().status==='1')
+        {
+          if(str==='sentRequests')
+          dispatch({type:CONFORMED_RECIPIENT, payload: childSnapshot.val()})
+          else
+          dispatch({type:CONFORMED_DONOR,payload : childSnapshot.val()})
+
+        }
+
+      })
+
+    }).then(()=>{
+      dispatch({type: FINISH_LOADING})
+    })
 
   }
 }
@@ -131,20 +155,22 @@ export const selectLibrary = (libraryId) => {
     type: 'select_library',
     payload: libraryId
   }
-}
+};
 
-export const profileEditSubmit = (type, rhFactor, image) => {
-  const { phoneNumber } = firebase.auth().currentUser;
+export const profileEditSubmit = ({ bloodType, rhFactor, avatar }) => {
+  return dispatch => {
+    const { phoneNumber } = firebase.auth().currentUser;
 
-  firebase.database().ref(`users/${phoneNumber}`).update({
-    avatar: image,
-    bloodType: type,
-    rhFactor: rhFactor,
-  }).then(() => {
-    dispatch({
-      type: PROFILE_UPDATE,
-      payload: { avatar: image, bloodType: type, rhFactor },
-    });
-    Actions.main();
-  }).catch(err => console.log(err));
+    firebase.database().ref(`users/${phoneNumber}`).update({
+      avatar: avatar,
+      bloodType: bloodType,
+      rhFactor: rhFactor,
+    }).then(() => {
+      dispatch({
+        type: PROFILE_UPDATE,
+        payload: { avatar, bloodType, rhFactor },
+      });
+      Actions.main();
+    }).catch(err => console.log(err));
+  };
 };

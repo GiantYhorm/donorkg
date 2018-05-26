@@ -151,6 +151,13 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-text-input-mask')
+    compile project(':react-native-image-crop-picker')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
+    compile project(':react-native-fetch-blob')
     implementation project(':react-native-text-input-mask')
 
     implementation project(':react-native-vector-icons')

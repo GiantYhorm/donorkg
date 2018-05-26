@@ -68,6 +68,8 @@
 		<string>AvenirNextLTPro-Regular.otf</string>
 		<string>AvenirNextCyr-Demi.ttf</string>
 		<string>AvenirNextCyr-Regular.ttf</string>
+		<string>AvenirNextCyr-Medium.ttf</string>
+		<string>AvenirNextCyr-Bold.ttf</string>
 	</array>
 </dict>
 </plist>

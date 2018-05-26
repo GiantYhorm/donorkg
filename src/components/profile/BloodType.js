@@ -33,11 +33,13 @@ const styles = StyleSheet.create({
     ...textStyle,
     color: RED,
     fontSize: 22,
+    alignSelf: 'center',
   },
   textInactive: {
     ...textStyle,
     color: '#d0d0d0',
     fontSize: 22,
+    alignSelf: 'center'
   },
 });
 
