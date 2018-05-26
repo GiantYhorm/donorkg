@@ -9,7 +9,7 @@ import {
 import {SCREEN_WIDTH,textStyle,RED,SCREEN_HEIGHT} from '../Variables';
 import { Icon,Button } from 'react-native-elements';
 import {Actions } from 'react-native-router-flux';
-import {conformedUsers} from '../actions/MainActions';
+import { conformedUsers } from '../actions/MainActions';
 import Image from 'react-native-image-progress';
 import firebase from 'react-native-firebase';
 import * as Progress from 'react-native-progress';
@@ -27,7 +27,8 @@ class ProfileView extends Component {
       loading: false,
       loadingRequest: false,
 
-      
+      recipient: false,
+      confirmed:false
     }
   }
 
@@ -79,7 +80,7 @@ class ProfileView extends Component {
                   status: '1',
                   dateConfirmation: '',
                   image: url
-                }).then(()=>that.setState({ loadingRequest: false }))
+                }).then(()=>that.setState({ loadingRequest: false,recipient: true }))
             })
           })
           
@@ -97,14 +98,14 @@ class ProfileView extends Component {
   }
 
   renderDonorContent(){
-
     if(this.state.loading || this.props.loading)
     return(
       <View style={styles.menu}>
         <Progress.Circle size={40} color={RED} indeterminate={true} />
       </View>
     )
-    if(this.props.recipient!==null){
+    if(this.props.recipient!==null&&this.state.recipient){
+    
       return(
         <View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>
             <Text style={[textStyle,{fontSize: 15,color: '#707070'}]}>Ожидайте ответа от реципиета . . .</Text>
@@ -129,8 +130,44 @@ class ProfileView extends Component {
       </View>
     )
   }
+  confirmRequest(){
+this.setState({loading: true})
+    let donorPhoneNumber = this.props.donor.userPhoneNumber;
+    let recipientPhoneNumber = firebase.auth().currentUser.phoneNumber;    
+    var response = '0'
+    firebase.database().ref(`users/${recipientPhoneNumber}/`).child('receivedRequests').once('value',snapshot=>{
+      snapshot.forEach(childSnapshot =>{
+        if(childSnapshot.val().userPhoneNumber===donorPhoneNumber&&childSnapshot.val().status==='1')
+        firebase.database().ref(`users/${recipientPhoneNumber}/receivedRequests`).child(childSnapshot.key).update({status: response})
+        firebase.database().ref(`users/${donorPhoneNumber}/sentRequests`).child(childSnapshot.key).update({status: response})
+        var timestampRef = firebase.database().ref("timestamp")
+        
+        timestampRef.set(firebase.database.ServerValue.TIMESTAMP)
+          .then(function() {
+            return timestampRef.once("value");
+          })
+          .then(function(snap) {
+          
+          
+        firebase.database().ref(`users/${recipientPhoneNumber}/`).once('value', bb=>{
+          let received = Number(bb.val().receivedCount)
+          received++
+          firebase.database().ref(`users/${recipientPhoneNumber}/`).update({receivedCount:received,dateConfirmation:snap.val()})
+        })
+        firebase.database().ref(`users/${donorPhoneNumber}/`).once('value', bb=>{
+          let donated = Number(bb.val().donatedCount)
+          donated++
+          firebase.database().ref(`users/${donorPhoneNumber}/`).update({block: snap.val(),donatedCount: donated,dateConfirmation:snap.val()})  
+        })
+      })
+      })
+    })
+   .then(()=>{
+    this.props.conformedUsers({phoneNumber:donorPhoneNumber,currentRole:this.props.profile.currentRole});    
+    this.setState({loading: false,confirmed:true})
+  })
+  }
   renderRecipientContent(){
-    const {phoneNumber} = this.props.profile
     if(this.state.loading || this.props.loading)
     return(
       <View style={styles.menu}>
@@ -138,20 +175,49 @@ class ProfileView extends Component {
       </View>
     )
     if(this.props.donor!==null){
+      if(this.props.donor.status === '0'){
+        return(
+          <View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>
+            <Text style={[textStyle,{fontSize: 15,color: '#707070'}]}>dfsdf</Text>
+          </View>  
+        )
+      }
+      else if(this.props.donor.status==='1'&&!this.state.confirmed){
+        const {userPhoneNumber}= this.props.donor
       return(
-        <View style={[styles.menu,{justifyContent:'flex-end'}]}>
-          <View style={{marginBottom:30}}>
+        <View style={[styles.menu,{justifyContent:'center',alignItems:'center'}]}>
+          <View style={{flex:1,borderRadius: 100}}>
+            <Image
+              style={{height : SCREEN_HEIGHT/4,width:SCREEN_WIDTH/2,marginTop: 20}}
+              source={{uri:this.props.donor.image}} 
+              resizeMode='stretch'>
+            </Image>
+          </View>
+          <View style={{flex:1,flexDirection:'row',marginTop: 40}}>
             <Button
               textStyle={[textStyle,{color:'#fff'}]}
               backgroundColor={RED}
-              icon={{name: 'phone',type:'feather'}}
-              title='ASDSADSAD' 
-              buttonStyle={{borderRadius:100}}
+              fontSize={12}
+              icon={{name: 'check',type:'feather'}}
+              title='Подтвердить фото' 
+              buttonStyle={{borderRadius:100,marginLeft:30}}
+              onPress={this.confirmRequest.bind(this)}
+            />
+            <Button
+              textStyle={[textStyle,{color:'#fff'}]}
+              backgroundColor={RED}
+              fontSize={12}
+              icon={{name: 'x',type:'feather'}}
+              title='Отклонить фото' 
+              buttonStyle={{borderRadius:100,marginRight:30}}
               onPress={()=> Communications.phonecall(phoneNumber, true)  }
             />
+            
           </View>
         </View>  
+        
       )
+    }
     }
     return(
       <View style={[styles.menu,{justifyContent:'flex-end'}]}>
@@ -170,7 +236,6 @@ class ProfileView extends Component {
   }
 
   render(){
-    console.log(this.props.loading)
     if(this.state.loadingRequest){
       return(
         <View style={styles.menu}>
@@ -265,5 +330,5 @@ const mapStateToProps = ({ main }) => {
   return { user,donor,recipient,loading };
 };
 export default connect(mapStateToProps,{
-  conformedUsers
+  conformedUsers,
 })(ProfileView)

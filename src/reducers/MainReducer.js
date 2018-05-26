@@ -6,7 +6,8 @@ import {
    AVATAR_CHANGED,
    CONFORMED_DONOR,
    CONFORMED_RECIPIENT,
-   FINISH_LOADING
+   FINISH_LOADING,
+   RESPONSE_REQUEST
 } from '../actions/types'
 
 const INITIAL_STATE = {

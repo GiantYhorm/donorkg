@@ -8,6 +8,7 @@ import {
    FINISH_LOADING,
    CONFORMED_DONOR,
    CONFORMED_RECIPIENT,
+   RESPONSE_REQUEST,
   } from './types'
 import { Actions } from 'react-native-router-flux'
 
@@ -145,6 +146,7 @@ export const conformedUsers = ({phoneNumber,currentRole}) =>{
 
   }
 }
+
 
 export const avatarChanged = (url) => {
   return dispatch => {

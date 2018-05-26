@@ -13,6 +13,7 @@ import {  } from '../actions'
 import Icon from 'react-native-vector-icons/Feather';
 import SecondTab from './SecondTab';
 import Profile from './Profile';
+import InformationTab from './InformationTab';
 
 class Main extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class Main extends Component {
   renderContent(){
     switch(this.state.indexTab){
       case '0':
-      return (<SecondTab />)
+      return (<InformationTab />)
       case '2':
       return (<Profile />)
       default:
