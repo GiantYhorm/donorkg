@@ -4,7 +4,7 @@
  * pagination indicators and a button to swipe through screens
  * or to get out of the flow when the last screen is reached
  */
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   AppRegistry,
   Dimensions, // Detects screen dimensions
@@ -13,20 +13,21 @@ import {
   StyleSheet, // CSS-like styles
   View, // Container component
   Text
-} from "react-native";
+} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
-import { StackNavigator } from "react-navigation";
+import { StackNavigator } from 'react-navigation';
 
 // Detect screen width and height
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
-import Button from "./Button";
-import Boiler from "./Boiler";
+import Button from './Button';
+import Boiler from './Boiler';
 
 export default class OnboardingScreens extends Component {
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: "#16a085",
+      backgroundColor: '#16a085',
       elevation: null
     }
   };
@@ -176,7 +177,7 @@ export default class OnboardingScreens extends Component {
     this.internals.isScrolling = true;
 
     // Trigger onScrollEnd manually on android
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       setImmediate(() => {
         this.onScrollEnd({
           nativeEvent: {
@@ -237,7 +238,7 @@ export default class OnboardingScreens extends Component {
     }
 
     return (
-      <View pointerEvents="none" style={[styles.pagination, styles.fullScreen]}>
+      <View pointerEvents='none' style={[styles.pagination, styles.fullScreen]}>
         {dots}
       </View>
     );
@@ -250,21 +251,21 @@ export default class OnboardingScreens extends Component {
     const lastScreen = this.state.index === this.state.total - 1;
     return (
       <View
-        pointerEvents="box-none"
+        pointerEvents='box-none'
         style={[styles.buttonWrapper, styles.fullScreen]}
       >
         {lastScreen ? (
           // Show this button on the last screen
           // TODO: Add a handler that would send a user to your app after onboarding is complete
           <Button
-            text="Начать"
-            onPress={() => this.props.navigation.navigate("Boiler")}
+            text='Начать'
+            onPress={() => Actions.SecondTab()}
             buttonStyle={styles.buttonStyle}
             buttonText={styles.buttonText}
           />
         ) : (
           // Or this one otherwise
-          <Button text="Далее" onPress={() => this.swipe()} />
+          <Button text='Далее' onPress={() => this.swipe()} />
         )}
       </View>
     );
@@ -295,28 +296,28 @@ const styles = StyleSheet.create({
   },
   // Main container
   container: {
-    backgroundColor: "transparent",
-    position: "relative"
+    backgroundColor: 'transparent',
+    position: 'relative'
   },
   // Slide
   slide: {
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent'
   },
   // Pagination indicators
   pagination: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 110,
     left: 0,
     right: 0,
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    backgroundColor: "transparent"
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: 'transparent'
   },
   // Pagination dot
   dot: {
-    backgroundColor: "rgba(0,0,0,.25)",
+    backgroundColor: 'rgba(0,0,0,.25)',
     width: 8,
     height: 8,
     borderRadius: 4,
@@ -327,34 +328,34 @@ const styles = StyleSheet.create({
   },
   // Active dot
   activeDot: {
-    backgroundColor: "#FFFFFF"
+    backgroundColor: '#e5385d'
   },
   // Button wrapper
   buttonWrapper: {
-    backgroundColor: "transparent",
-    flexDirection: "column",
-    position: "absolute",
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    position: 'absolute',
     bottom: 0,
     left: 0,
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 40,
-    justifyContent: "flex-end",
-    alignItems: "center"
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   buttonStyle: {
     borderRadius: 50, // Rounded border
     borderWidth: 2, // 2 point border widht
-    borderColor: "#FFFFFF", // White colored border
+    borderColor: '#e5385d', // White colored border
     paddingHorizontal: 50, // Horizontal padding
     paddingVertical: 10, // Vertical padding
-    backgroundColor: '#fff'
+    backgroundColor: '#e5385d'
   },
   // Button text
   buttonText: {
-    color: "#e5385d",
-    fontWeight: "bold",
-    fontFamily: "Avenir"
+    color: '#fff',
+    fontWeight: 'bold',
+    fontFamily: 'Avenir'
   },
   haveAccText: {
     alignSelf: 'center',
@@ -363,4 +364,4 @@ const styles = StyleSheet.create({
     color: '#fff'
   }
 });
-AppRegistry.registerComponent("OnboardingScreens", () => OnboardingScreens);
+AppRegistry.registerComponent('OnboardingScreens', () => OnboardingScreens);
