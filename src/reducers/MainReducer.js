@@ -13,7 +13,7 @@ import {
 const INITIAL_STATE = {
   user: null,
   list: null,
-  loading : false,
+  loading : true,
   
   donor: null,
   recipient: null

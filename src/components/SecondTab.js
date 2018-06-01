@@ -13,11 +13,13 @@ import { RED } from '../Variables';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import { textStyle} from '../Variables';
-import SearchDonor from './SecondTab/SearchDonor'
+import SearchDonor from './SecondTab/SearchDonor';
+import Waiting from './SecondTab/Waiting';
+import Done from './SecondTab/Done';
+
 import { initialUpdateUserDatabase } from '../actions';
 import { Icon } from 'react-native-elements';
 import Image from 'react-native-image-progress';
-
 import * as Progress from 'react-native-progress';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -27,21 +29,7 @@ const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-class FirstRoute extends Component{
-  render(){
-    return(
-      <View style={[ styles.container, { backgroundColor: '#fff' } ]} />
-    )
-  }
-}
 
-class SecondRoute extends Component{
-  render(){
-    return(
-      <View style={[ styles.container, { backgroundColor: '#fff' } ]} />
-    )
-  }
-}
 const logoUri = require('../assets/logo.png');
 
 class SecondTab extends Component {
@@ -49,19 +37,20 @@ class SecondTab extends Component {
     constructor(props){
       super(props)
       this.state = {
+        loading: true,
         index: 2,
         width: '',
         height: '',
         routes: [
-          { key: 'first', title: 'Просмотренные' },
+          { key: 'first', title: 'Завершенные' },
           { key: 'second', title: 'В ожидании' },
           { key: 'third', title: 'Поиск' },
         ],
         currentStep: '0',
 
-        firstName: `ыва`,
-        lastName: `ыва`,
-        patronymic: `ыва`,
+        firstName: ``,
+        lastName: ``,
+        patronymic: ``,
         bloodType: `0`,
         rhFactor: `0`,
         currentRole: `0`,
@@ -71,7 +60,9 @@ class SecondTab extends Component {
       }
     }
 
-
+    componentWillReceiveProps(){
+      this.setState({loading:false})
+    }
     _handleIndexChange = index => this.setState({ index });
 
     _renderLabel = props => ({ route, index }) => {
@@ -99,8 +90,8 @@ class SecondTab extends Component {
     />
 
     _renderScene = SceneMap({
-      first: FirstRoute,
-      second: SecondRoute,
+      first: Done,
+      second: Waiting,
       third: SearchDonor
     });
 
@@ -360,7 +351,7 @@ class SecondTab extends Component {
           </View>
         )
       }
-      if(this.props.user === null){
+      else if(this.props.user === null){
         return(
           <View style={styles.container}>
   

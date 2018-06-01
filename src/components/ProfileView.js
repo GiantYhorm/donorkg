@@ -72,14 +72,20 @@ class ProfileView extends Component {
                   userPhoneNumber: that.props.profile.phoneNumber,
                   status: '1',
                   dateConfirmation: '',
-                  image: url
+                  image: url,
+                  firstName: that.props.profile.firstName,
+                  lastName: that.props.profile.lastName,
+                  patronymic: that.props.profile.patronymic
                 })
                 firebase.database().ref(`users/${that.props.profile.phoneNumber}/receivedRequests/${snapshot.val()}/`).update({
                   requestDate: snapshot.val(),
                   userPhoneNumber: phoneNumber,
                   status: '1',
                   dateConfirmation: '',
-                  image: url
+                  image: url,
+                  firstName: that.props.profile.firstName,
+                  lastName: that.props.profile.lastName,
+                  patronymic: that.props.profile.patronymic
                 }).then(()=>that.setState({ loadingRequest: false,recipient: true }))
             })
           })
@@ -147,6 +153,24 @@ class ProfileView extends Component {
         </View>
       </View>
     )
+  }
+  refuseRequest(){
+    this.setState({loading: true})
+    let donorPhoneNumber = this.props.donor.userPhoneNumber;
+    let recipientPhoneNumber = firebase.auth().currentUser.phoneNumber;    
+    var response = '2'
+    firebase.database().ref(`users/${recipientPhoneNumber}/`).child('receivedRequests').once('value',snapshot=>{
+      snapshot.forEach(childSnapshot =>{
+        if(childSnapshot.val().userPhoneNumber===donorPhoneNumber&&childSnapshot.val().status==='1'){
+        firebase.database().ref(`users/${recipientPhoneNumber}/receivedRequests`).child(childSnapshot.key).update({status: response})
+        firebase.database().ref(`users/${donorPhoneNumber}/sentRequests`).child(childSnapshot.key).update({status: response})
+       }
+      })
+    })
+   .then(()=>{
+    this.props.conformedUsers({phoneNumber:donorPhoneNumber,currentRole:this.props.profile.currentRole});    
+    this.setState({loading: false,confirmed:true})
+  })
   }
   confirmRequest(){
 this.setState({loading: true})
@@ -228,7 +252,7 @@ this.setState({loading: true})
               icon={{name: 'x',type:'feather'}}
               title='Отклонить фото' 
               buttonStyle={{borderRadius:100,marginRight:30}}
-              onPress={()=> Communications.phonecall(phoneNumber, true)  }
+              onPress={this.refuseRequest.bind(this)}
             />
             
           </View>
@@ -298,7 +322,7 @@ this.setState({loading: true})
         bloodType={`${this.props.profile.bloodType}${this.props.profile.rhFactor}`}
       />
       <View style={styles.menu}>
-        {this.props.user.currentRole === 'donor' ? this.renderDonorContent() : this.renderRecipientContent()}
+        {this.props.user.currentRole == 'donor' ? this.renderDonorContent() : this.renderRecipientContent()}
       </View>
     </ScrollView>
     )

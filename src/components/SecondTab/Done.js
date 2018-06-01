@@ -10,13 +10,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import { fetchAppropriateData,fetchUserData } from '../../actions';
 import {List, ListItem, SearchBar} from 'react-native-elements';
 
-class SearchDonor extends Component {
+class Done extends Component {
   constructor(props) {
     super(props);
     this.state = {
       height: '',
       width: '',
-      loading:true,
+      loading:false,
       list: [],
       refreshing: false,
     }
@@ -26,67 +26,30 @@ class SearchDonor extends Component {
     this.makeRemoteRequest()
 }
 
-  makeRemoteRequest = () =>{
-    const phone = firebase.auth().currentUser.phoneNumber
-    const {rhFactor,bloodType,currentRole} = this.props.user
-    var that = this
-    let list = []
-    this.setState({loading: true})
-    firebase.database().ref(`users/`).on('value', snapshot => {
-    snapshot.forEach(childSnapshot => {
-     obj = childSnapshot.val()
-     obj.phoneNumber=childSnapshot.key
-
-     if(phone!==obj.phoneNumber&&rhFactor===obj.rhFactor){
-
-       if(currentRole==='donor'){
-         if(bloodType === 'O'){
-           list.push(obj)
-
-         }
-         else if(bloodType === 'A'){
-           if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='AB'){
-             list.push(obj)
-           }
-         }
-         else if(bloodType === 'B'){
-           if(childSnapshot.val().bloodType==='AB'||childSnapshot.val().bloodType==='B'){
-             list.push(obj)
-           }
-         }
-         else{
-           if(bloodType==='AB'&&bloodType===childSnapshot.val().bloodType){
-             list.push(obj)
-          }
-      }
-     }
-     else if(currentRole==='recipient'){
-       if(bloodType === 'O'&&bloodType===childSnapshot.val().bloodType){
+makeRemoteRequest = () =>{
+  const phone = firebase.auth().currentUser.phoneNumber
+  const {rhFactor,bloodType,currentRole} = this.props.user
+  var that = this
+  let list = []
+  this.setState({loading: true})
+  firebase.database().ref(`users/${phone}/sentRequests`).on('value', snapshot => {
+  snapshot.forEach(childSnapshot => {
+    if(childSnapshot.val().status!=='1'){
+   obj = childSnapshot.val()
          list.push(obj)
         }
-        else if(bloodType === 'A'){
-           if(childSnapshot.val().bloodType==='A'||childSnapshot.val().bloodType==='O'){
-               list.push(obj)
-           }
-        }
-        else if(bloodType === 'B'){
-           if(childSnapshot.val().bloodType==='O'||childSnapshot.val().bloodType==='B'){
-               list.push(obj)
-           }
-        }
-        else{
-             if(bloodType==='AB'){
-               list.push(obj)
-
-             }
-           }
-        }
+   })
+   firebase.database().ref(`users/${phone}/recievedRequests`).on('value', snapshot => {
+    snapshot.forEach(childSnapshot => {
+      if(childSnapshot.val().status!=='1'){     
+      obj = childSnapshot.val()
+           list.push(obj)
       }
      })
-    that.setState({list,loading:false,refreshing:false})
-  })
-
-  }
+   that.setState({list,loading:false,refreshing:false})
+    })
+})
+}
 
   handleRefresh=()=>{
 
@@ -128,7 +91,7 @@ class SearchDonor extends Component {
               title={`${item.firstName} ${item.lastName}`}
               containerStyle={{borderBottomWidth:0}}
               titleStyle={[textStyle,]}
-              avatar={{uri: item.avatar}}
+              avatar={{uri: item.image}}
           />
    )}
           keyExtractor={item => item.firstName}
@@ -169,4 +132,4 @@ const mapStateToProps = ({ main }) => {
 
 export default connect(mapStateToProps, {
   fetchAppropriateData,fetchUserData,
-})(SearchDonor);
+})(Done);
