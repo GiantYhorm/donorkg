@@ -1,27 +1,62 @@
 {
   "project_info": {
+<<<<<<< HEAD
     "project_number": "862304898550",
     "firebase_url": "https://donorkg.firebaseio.com",
     "project_id": "donorkg",
     "storage_bucket": "donorkg.appspot.com"
+=======
+    "project_number": "1009366378628",
+    "firebase_url": "https://donerka-5dc8f.firebaseio.com",
+    "project_id": "donerka-5dc8f",
+    "storage_bucket": "donerka-5dc8f.appspot.com"
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
   },
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:862304898550:android:7fd253d122e294c4",
+=======
+        "mobilesdk_app_id": "1:1009366378628:android:7fd253d122e294c4",
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
         "android_client_info": {
           "package_name": "com.donorkg"
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "862304898550-9hcn1biceoe1u280ooggijlfra2soiql.apps.googleusercontent.com",
+=======
+          "client_id": "1009366378628-g5sjf5omt2sef3k984shpph0fd2m3ar5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.donorkg",
+            "certificate_hash": "36b2081d17b84498dd673e54ef86015d4ccee45c"
+          }
+        },
+        {
+          "client_id": "1009366378628-93bipei91k1bbaonsbtk59qvn3m6keru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.donorkg",
+            "certificate_hash": "630955cb16150c0032a5d84d045616ed3554eab2"
+          }
+        },
+        {
+          "client_id": "1009366378628-4e9rdadodanpg23vdil1uelv86p5972m.apps.googleusercontent.com",
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
           "client_type": 3
         }
       ],
       "api_key": [
         {
+<<<<<<< HEAD
           "current_key": "AIzaSyAy3Ewx7q6davqXMhlkcwJCPWJdvDMgVws"
+=======
+          "current_key": "AIzaSyBeW8cOh-bd4tQsCibZqJG44KCa6ZlMQK0"
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
         }
       ],
       "services": {
@@ -29,8 +64,18 @@
           "status": 1
         },
         "appinvite_service": {
+<<<<<<< HEAD
           "status": 1,
           "other_platform_oauth_client": []
+=======
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009366378628-4e9rdadodanpg23vdil1uelv86p5972m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
         },
         "ads_service": {
           "status": 2

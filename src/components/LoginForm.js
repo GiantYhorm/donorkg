@@ -60,11 +60,7 @@ class LoginForm extends Component {
   
     firebase.auth().signInWithPhoneNumber(phoneNumber)
       .then(confirmResult => this.setState({ isModalVisible:true,confirmResult,loading: false}))
-      .catch(error => 
-       {
-         console.log(error.message)
-          this.setState({ message: `Sign In With Phone Number Error: ${error.message}`,loading: false })
-      });
+      .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}`,loading: false }));
   };
 
   confirmCode = () => {

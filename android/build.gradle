@@ -2,9 +2,14 @@
 
 buildscript {
     repositories {
+<<<<<<< HEAD
 	google()
         jcenter()
 
+=======
+        jcenter()
+	google()
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
     }
     dependencies {
 	classpath 'com.android.tools.build:gradle:3.1.2';
@@ -16,7 +21,10 @@ buildscript {
 
 allprojects {
     repositories {
+<<<<<<< HEAD
  	google()
+=======
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
         mavenLocal()
         jcenter()
         maven {
@@ -24,5 +32,10 @@ allprojects {
 	url "$rootDir/../node_modules/react-native/android"
         }
 maven { url "https://jitpack.io" }
+<<<<<<< HEAD
    }
+=======
+	google()
+    }
+>>>>>>> 81c22a39d26d1d67607cd667e08fe6a21d291221
 }
