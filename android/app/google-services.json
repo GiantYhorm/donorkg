@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "862304898550",
+    "firebase_url": "https://donorkg.firebaseio.com",
+    "project_id": "donorkg",
+    "storage_bucket": "donorkg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862304898550:android:7fd253d122e294c4",
+        "android_client_info": {
+          "package_name": "com.donorkg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862304898550-9hcn1biceoe1u280ooggijlfra2soiql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy3Ewx7q6davqXMhlkcwJCPWJdvDMgVws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
